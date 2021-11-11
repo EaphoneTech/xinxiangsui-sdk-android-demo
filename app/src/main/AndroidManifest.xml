@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+          package="com.eaphone.sdktest">
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <!--模糊定位权限，仅作用于6.0+-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--精准定位权限，仅作用于6.0+-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <application
+            android:allowBackup="true"
+            android:icon="@mipmap/icon_net"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/icon_net"
+            android:supportsRtl="true"
+            android:usesCleartextTraffic="true"
+            android:requestLegacyExternalStorage="true"
+            android:resizeableActivity="false"
+            android:networkSecurityConfig="@xml/network_https_config"
+            android:theme="@style/AppTheme"
+            tools:ignore="GoogleAppIndexingWarning">
+
+        <activity android:name="com.eaphone.sdktest.activity.MainActivity"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+
+        <provider
+                android:name="android.support.v4.content.FileProvider"
+                android:authorities="com.eaphone.sdktest.FileProvider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/provider_paths" />
+        </provider>
+
+        <activity
+            android:name="com.eaphone.sdktest.activity.WifiSetActivity"
+            android:screenOrientation="portrait"
+            android:label="配网" />
+
+        <activity
+                android:name="com.eaphone.sdktest.activity.EcgDataActivity"
+                android:screenOrientation="portrait"
+                android:label="实时波形" />
+    </application>
+
+</manifest>

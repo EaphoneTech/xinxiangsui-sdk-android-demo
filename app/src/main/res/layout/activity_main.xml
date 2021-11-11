@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:context=".activity.MainActivity">
+
+    <View
+            android:id="@+id/view_status_bar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+    <LinearLayout
+            android:background="@color/colorblue"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+
+        <View android:layout_width="0dp"
+              android:layout_height="1dp"
+              android:layout_weight="1"/>
+        <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/tv_tab_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="附近设备"
+                android:textColor="@color/text_white"
+                android:textSize="17sp"/>
+
+        <ProgressBar
+                android:layout_marginStart="5dp"
+                android:id="@+id/pb_loading"
+                android:indeterminateDrawable="@drawable/custom_progress_draw"
+                android:indeterminate="false"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+
+        <View android:layout_width="0dp"
+              android:layout_height="1dp"
+              android:layout_weight="1"/>
+
+
+    </LinearLayout>
+    <Button
+            android:visibility="gone"
+            android:id="@+id/bnt_get_devices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取设备列表"/>
+
+
+    <com.xw.repo.refresh.PullToRefreshLayout
+            android:id="@+id/pullToRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <com.xw.repo.refresh.PullListView
+                android:id="@+id/list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:listSelector="@android:color/transparent"
+                android:overScrollMode="never"
+                android:scrollingCache="false">
+
+        </com.xw.repo.refresh.PullListView>
+    </com.xw.repo.refresh.PullToRefreshLayout>
+
+
+    <TextView
+            android:id="@+id/tv_erro"
+            android:visibility="visible"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:text="当前设备没有发现蓝牙模块"
+            android:textColor="@color/color666"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+</LinearLayout>

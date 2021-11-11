@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_horizontal">
+    <LinearLayout
+            android:minWidth="220dp"
+            android:layout_width="222dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@drawable/shape_white_bg_4">
+
+        <TextView
+                android:id="@+id/tv_net"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:text="配网"
+                android:padding="12dp"
+                android:textColor="#666666"/>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#E4E4E4"/>
+        <TextView
+
+                android:id="@+id/tv_ecg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:text="实时波行"
+                android:padding="12dp"
+                android:textColor="#666666"/>
+
+    </LinearLayout>
+</LinearLayout>
