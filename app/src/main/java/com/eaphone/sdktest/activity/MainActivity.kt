@@ -16,8 +16,8 @@ import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.ToastUtils
-import com.eaphone.lib_sdk.sdk.EaphoneInterface
 import com.eaphone.lib_sdk.listener.BleScanListener
+import com.eaphone.lib_sdk.sdk.EaphoneInterface
 import com.eaphone.sdktest.R
 import com.eaphone.sdktest.adapter.DeviceListAdapter
 import com.eaphone.sdktest.dialog.CommonDialog
@@ -28,7 +28,7 @@ import com.xw.repo.refresh.PullToRefreshLayout
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity(),PullToRefreshLayout.OnRefreshListener, BleScanListener{
+class MainActivity : AppCompatActivity(),PullToRefreshLayout.OnRefreshListener, BleScanListener {
 
 
     private var mContext : Context? = null

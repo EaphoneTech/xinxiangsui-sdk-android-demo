@@ -21,14 +21,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
+
 /**
- * @ClassName: BLEManager
- * @Author: he lin hua
- * @CreateDate: 2020/11/24 9:47
- * @Version: 1.0
+ * BLEManager
  */
-
-
 public class BLEManager {
 
     private Context mContext;
@@ -81,8 +77,7 @@ public class BLEManager {
 
     /**
      * 获取一个BLEManager单例
-     *
-     * @param context
+     * @param context Context
      * @return 返回一个BLEManager的实例对象
      */
     public static BLEManager getInstance(Context context) {
@@ -120,8 +115,7 @@ public class BLEManager {
 
     /**
      * 获取附近设备列表
-     *
-     * @param bleScanListener
+     * @param bleScanListener BleScanListener
      */
     public void getDeviceList(BleScanListener bleScanListener) {
         mBleScanListener = bleScanListener;
@@ -131,8 +125,9 @@ public class BLEManager {
 
     /**
      * 开始配网
-     *
      * @param serial_number 设备序列号
+     * @param wifi_name wifi名称
+     * @param wifi_password wifi密码
      */
     public void bindDevice(String serial_number, String wifi_name, String wifi_password) {
         ELog.d("bindDevice");
@@ -144,8 +139,10 @@ public class BLEManager {
 
     /**
      * 开始配网
-     *
      * @param device 设备
+     * @param wifi_name wifi名称
+     * @param wifi_password wifi密码
+     * @param listener BleBindResultListener
      */
     public void bindDevice(BluetoothDevice device, String wifi_name, String wifi_password, BleBindResultListener listener) {
         ELog.d("bindDevice");
@@ -180,8 +177,8 @@ public class BLEManager {
 
     /**
      * 获取ECG数据
-     *
      * @param device 设备
+     * @param listener EcgDataResultListener
      */
     public void getEcgData(BluetoothDevice device, EcgDataResultListener listener) {
         ELog.d("getEcgData()");

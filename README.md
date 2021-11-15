@@ -2,12 +2,12 @@
 ## 说明
 易风设备管理SDK，包括获取设备列表，设备配网和设备实时波形数据，根据需要您可以选择实现相关接口
 
-[EaphoneSDKDemo](www.baidu.com)
+[EaphoneSDKDemo](https://github.com/a312588726/EaphoneSDK)
 ## 集成
 一：Gradle：
 在module的build.gradle文件中加入以下依赖：
 ```language
-implementation 'cn.eaphone.android.blemannage:1.0.0'
+implementation 'io.github.a312588726:lib_sdk:1.0.0'
 ```
 在项目根目录的build.gradle文件下添加以下：
 ```language
@@ -100,7 +100,7 @@ EaphoneInterface.netBind(mContext, mBluetoothDevice, wifi_name, wifi_password, m
 |onECGStatusResult（int ecg_status）|ecg数据信号状态，返回：ecg_status (1=正常 or -1=质量差)|
 |onPPGStatusResult（int ppg_status）|ppg数据信号状态，返回：ppg_status (1=正常 or -1=质量差)|
 |onEcgCuntResult（int heart_rate）|实时心率，返回：heart_rate(心率值)|
-|onDataResult（long time, List<Integer> ecgData, List<Integer> ppgData）|实时波行数据，返回：time(监测时长)，ecgData（每秒ecg数据），ppgData（每秒ppg数据）|
+|onDataResult（long time, List<Integer> ecgData, List<Integer> ppgData）|实时波行数据，返回：time(监测时长)，ecgData（每秒ecg数据,item值max=30000, min=-30000），ppgData（每秒ppg数据，,item值max=30000, min=-30000）|
 
 ## 退出设备连接
 相关页面关闭，需要调用退出接口，防止内存泄漏
@@ -113,13 +113,4 @@ EaphoneInterface.netBind(mContext, mBluetoothDevice, wifi_name, wifi_password, m
     }
 
 
-```
-
-## 混淆
-代码示例：
-```language
--keep public class com.google.gson.**
--keep public class com.google.gson.** {public private protected *;}
--keepattributes Signature
--keepattributes *Annotation*
 ```

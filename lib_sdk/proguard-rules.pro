@@ -74,6 +74,9 @@
 -dontwarn javax.annotation.**
 -dontwarn javax.inject.**
 
+#---------------------------------1.实体类---------------------------------
+-keep public class com.eaphone.lib_sdk.listener.** { *; }
+
 #不混淆某个类
 -keep public class com.eaphone.lib_sdk.sdk.EaphoneInterface { *; }
 

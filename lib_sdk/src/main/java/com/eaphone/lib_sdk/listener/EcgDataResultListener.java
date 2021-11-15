@@ -4,9 +4,6 @@ import java.util.List;
 
 /**
  * 获取实时波形数据回调接口
- * @Author: he lin hua
- * @CreateDate: 2020/9/8 15:43
- * @Version: 1.0
  */
 public interface EcgDataResultListener {
 
@@ -18,6 +15,7 @@ public interface EcgDataResultListener {
 
     /**
      *实时波行数据返回
+     * @param time 监测时长
      * @param ecgData ecg波形数据
      * @param ppgData ppg波形数据
      */

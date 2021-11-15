@@ -7,8 +7,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import com.blankj.utilcode.util.*
-import com.eaphone.lib_sdk.sdk.EaphoneInterface
 import com.eaphone.lib_sdk.listener.EcgDataResultListener
+import com.eaphone.lib_sdk.sdk.EaphoneInterface
 import com.eaphone.sdktest.R
 import com.eaphone.sdktest.utils.MyUtils
 import com.eaphone.sdktest.utils.setWidthHeight

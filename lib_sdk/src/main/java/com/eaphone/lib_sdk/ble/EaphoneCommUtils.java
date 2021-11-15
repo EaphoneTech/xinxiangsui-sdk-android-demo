@@ -7,8 +7,11 @@ import android.location.LocationManager;
  *工具类
  */
 public class EaphoneCommUtils {
+
     /**
      * 手机是否开启位置服务，如果没有开启那么所有app将不能使用定位功能
+     * @param mContext mContext
+     * @return true or fals
      */
     public static boolean isLocServiceEnable(Context mContext) {
         LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
@@ -57,13 +60,7 @@ public class EaphoneCommUtils {
         return   new String (b);
     }
 
-    /**
-     * 将两个字节拼接还原成有符号的整型数据
-     数据域中的数据都按小端存储，示例：数据0x1234，则Byte0为0x34,Byte1为0x12
-     * @param byte1 byte1
-     * @param byte2 byte2
-     * @return
-     */
+
     public static int pinJie2ByteToInt(byte byte1, byte byte2) {
         int result = byte2;
         result = (result << 8) | (0x00FF & byte1);
