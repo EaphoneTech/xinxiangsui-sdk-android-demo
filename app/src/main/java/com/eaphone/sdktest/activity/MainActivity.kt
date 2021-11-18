@@ -13,7 +13,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.blankj.utilcode.util.BarUtils
-import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.eaphone.lib_sdk.listener.BleScanListener
@@ -30,14 +29,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),PullToRefreshLayout.OnRefreshListener, BleScanListener {
 
-
     private var mContext : Context? = null
     private var  mAdapter: DeviceListAdapter? = null
     private var mBluetoothAdapter: BluetoothAdapter?= null
     private val BT_OPEN_GPS = 10008
     private val BT_OPEN_REQUIRE_CODE = 10009
     private val ITEM_CODE = 10020
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,18 +136,15 @@ class MainActivity : AppCompatActivity(),PullToRefreshLayout.OnRefreshListener, 
     }
 
     override fun onLeScan(device: BluetoothDevice) {
-        LogUtils.d("---onLeScan----"+device.name)
         mAdapter?.addData(device)
     }
 
     override fun onScanFinished(scanResultList: List<BluetoothDevice>) {
-        LogUtils.d("---onScanFinished----"+scanResultList.size)
         pb_loading.visibility = View.INVISIBLE
         pullToRefreshLayout.refreshFinish(true)
     }
 
     override fun onScanStarted() {
-        LogUtils.d("---onScanStarted----")
         mAdapter?.clearData()
         pb_loading.visibility = View.VISIBLE
         pullToRefreshLayout.refreshFinish(true)

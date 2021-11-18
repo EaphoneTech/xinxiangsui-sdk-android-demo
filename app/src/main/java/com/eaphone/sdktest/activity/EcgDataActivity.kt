@@ -49,7 +49,6 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
     }
 
     override fun onConnetSucceed(isNewDevice: Boolean) {
-        LogUtils.e("-----onConnetSucceed-------${MyUtils.isMainThread()}----isNewDevice=$isNewDevice")
         if(isNewDevice){
             layou_type.visibility = View.VISIBLE
             layou_ppg.visibility = View.VISIBLE
@@ -69,7 +68,6 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
     }
 
     override fun onDataResult(time: Long, ecgData: List<Int>?, ppgData: List<Int>?) {
-        LogUtils.e("-----onDataResult------${MyUtils.isMainThread()}-----time=$time")
         runOnUiThread {
             tv_time.text = MyUtils.formatSeconds(time)
         }
@@ -82,14 +80,12 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
     }
 
     override fun onError(result: String?) {
-        LogUtils.e("-----onError------${MyUtils.isMainThread()}-----result=$result")
         runOnUiThread {
             ToastUtils.showLong(result)
         }
     }
 
     override fun onDeviceStatus(isDown: Boolean) {
-        LogUtils.e("-----onDeviceStatus-----${MyUtils.isMainThread()}------isDown=$isDown")
         runOnUiThread {
             if(isDown){
                 tv_status.text = "离座停止测量"
@@ -108,7 +104,6 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
     }
 
     override fun onEcgCuntResult(heart_rate: Int) {
-        LogUtils.e("-----onEcgCuntResult----------heart_rate=$heart_rate")
         runOnUiThread {
             tv_ecg.text = "$heart_rate bpm"
             layou_xin.visibility = View.VISIBLE
@@ -116,7 +111,6 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
     }
 
     override fun onECGStatusResult(ecg_status: Int) {
-        LogUtils.e("-----onECGStatusResult------${MyUtils.isMainThread()}----ecg_status=$ecg_status")
         runOnUiThread {
             if(ecg_status == 1){
                 layou_error_ecg.visibility = View.GONE
@@ -127,7 +121,6 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
     }
 
     override fun onPPGStatusResult(ppg_status: Int) {
-        LogUtils.e("-----onPPGStatusResult----${MyUtils.isMainThread()}------ppg_status=$ppg_status")
         runOnUiThread {
             if(ppg_status == 1){
                 layou_error_ppg.visibility = View.GONE
@@ -154,6 +147,7 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
                     }
                 }
             }
+
             mShowEcgTimer?.schedule(mTimerTask, 200, timeCunt)
         }
     }
@@ -162,6 +156,7 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
     private var mShowPpgTimer: Timer? = null
     private fun showPpgTimer() {
         ppgview.setData(showPpgValues, ppgview.SHOW_MODEL_DYNAMIC_SCROLL, maxRow)
+
         if (mShowPpgTimer == null) {
             mShowPpgTimer = Timer()
             val mTimerTask = object : TimerTask() {

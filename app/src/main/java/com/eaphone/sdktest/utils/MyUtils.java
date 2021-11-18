@@ -61,9 +61,5 @@ public class MyUtils {
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, resources.getDisplayMetrics());
         return (int) px;
     }
-
-    public static boolean isMainThread() {
-        return Looper.getMainLooper() == Looper.myLooper();
-    }
-
+    
 }

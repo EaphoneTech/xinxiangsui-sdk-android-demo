@@ -55,5 +55,4 @@ dependencies {
     implementation 'com.xw.repo:PullToRefresh:2.1@aar'
     implementation 'com.blankj:utilcode:1.23.7'
     implementation 'io.github.a312588726:lib_sdk:1.0.0'
-
 }

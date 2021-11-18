@@ -14,9 +14,8 @@ import com.eaphone.sdktest.R
  * @Email           371232886@qq.com
  * @Copyright       xiaoge
  */
-open class BaseDialog : Dialog {
-    constructor(context: Context) : super(context, R.style.DialogBlackBgStyle) {
-       //设置动画
+open class BaseDialog(context: Context) : Dialog(context, R.style.DialogBlackBgStyle) {
+    init {
         window?.attributes?.windowAnimations = R.style.BottomDialogAnimation
     }
 }

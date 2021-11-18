@@ -11,7 +11,6 @@
 .DS_Store
 /build
 /captures
-/lib_sdk/
 .externalNativeBuild
 =======
 # Build and Release Folders
@@ -33,3 +32,6 @@ bin-release/
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
 >>>>>>> d28c80221870d10da71fe187cd72062cc602d15e
+
+#demo模式下lib包不上传
+/lib_sdk/
