@@ -6,30 +6,13 @@ import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 import java.util.List;
 
-/**
- * @ClassName: EspWifiAdminSimple
- * @Description: java类作用描述
- * @Author: he lin hua
- * @CreateDate: 2020/9/8 15:59
- * @Version: 2.0
- */
-public class EspWifiAdminSimple {
 
-	private final Context mContext;
+public class WifiUitils {
 
-	
-	public EspWifiAdminSimple(Context context) {
-		mContext = context;
-	}
-
-
-
-	public boolean is5GHz() {
-		WifiInfo mWifiInfo = getConnectionInfo();
-		Log.e("wifi", "mWifiInfo:" + mWifiInfo.toString());
+	public static boolean is5GHz(Context mContext) {
+		WifiInfo mWifiInfo = getConnectionInfo(mContext);
 		int mFrequency = 0;
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 			mFrequency = mWifiInfo.getFrequency();
@@ -37,10 +20,10 @@ public class EspWifiAdminSimple {
 		return is5GHz(mFrequency);
 	}
 
-	public String getWifiConnectedSsid() {
-		WifiInfo mWifiInfo = getConnectionInfo();
+	public static String getWifiConnectedSsid(Context mContext) {
+		WifiInfo mWifiInfo = getConnectionInfo(mContext);
 		String ssid = null;
-		if (mWifiInfo != null && isWifiConnected()) {
+		if (mWifiInfo != null && isWifiConnected(mContext)) {
 			int len = mWifiInfo.getSSID().length();
 			if (mWifiInfo.getSSID().startsWith("\"")
 					&& mWifiInfo.getSSID().endsWith("\"")) {
@@ -52,16 +35,15 @@ public class EspWifiAdminSimple {
 		return ssid;
 	}
 
-	// get the wifi info which is "connected" in wifi-setting
-	private WifiInfo getConnectionInfo() {
+	private static WifiInfo getConnectionInfo(Context mContext) {
 		WifiManager mWifiManager = (WifiManager) mContext
 				.getSystemService(Context.WIFI_SERVICE);
 		WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
 		return wifiInfo;
 	}
 
-	private boolean isWifiConnected() {
-		NetworkInfo mWiFiNetworkInfo = getWifiNetworkInfo();
+	private static boolean isWifiConnected(Context mContext) {
+		NetworkInfo mWiFiNetworkInfo = getWifiNetworkInfo(mContext);
 		boolean isWifiConnected = false;
 		if (mWiFiNetworkInfo != null) {
 			isWifiConnected = mWiFiNetworkInfo.isConnected();
@@ -69,7 +51,7 @@ public class EspWifiAdminSimple {
 		return isWifiConnected;
 	}
 
-	private NetworkInfo getWifiNetworkInfo() {
+	private static NetworkInfo getWifiNetworkInfo(Context mContext) {
 		ConnectivityManager mConnectivityManager = (ConnectivityManager) mContext
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo mWiFiNetworkInfo = mConnectivityManager
@@ -77,31 +59,30 @@ public class EspWifiAdminSimple {
 		return mWiFiNetworkInfo;
 	}
 
-	public boolean is5GHz(int freq) {
+	private static boolean is5GHz(int freq) {
 		return freq > 4900 && freq < 5900;
 	}
-
 
 	/**
 	 * 获取wifi信号强度
 	 * @return
 	 */
-	public int getWifiStatus(){
+	public static int getWifiStatus(Context mContext){
 		int status = 0;
-		WifiInfo mWifiInfo = getConnectionInfo();
+		WifiInfo mWifiInfo = getConnectionInfo(mContext);
 		status = mWifiInfo.getRssi();
 		return status;
 	}
 
-	private List<ScanResult> getWifiList() {
+	private static List<ScanResult> getWifiList(Context mContext) {
 		WifiManager wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
 		List<ScanResult> scanWifiList = wifiManager.getScanResults();
 		return scanWifiList;
 	}
 
 	//判断当前连接的5G wifi是否是混合wifi 支持2.4G
-	public boolean is5Gor4G(String ssid){
-		List<ScanResult> list = getWifiList();
+	public static boolean is5Gor4G(Context mContext, String ssid){
+		List<ScanResult> list = getWifiList(mContext);
 		boolean isOK = false;
 		int it = 0;
 		for(int i = 0; i < list.size(); i++){
@@ -117,4 +98,5 @@ public class EspWifiAdminSimple {
 		}
 		return  isOK;
 	}
+
 }

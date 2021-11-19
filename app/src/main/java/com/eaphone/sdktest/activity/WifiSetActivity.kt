@@ -23,7 +23,7 @@ import com.eaphone.sdktest.R
 import com.eaphone.sdktest.dialog.CommonDialog
 import com.eaphone.sdktest.dialog.LoadingDialog
 import com.eaphone.sdktest.dialog.SiginBntDialog
-import com.eaphone.sdktest.utils.EspWifiAdminSimple
+import com.eaphone.sdktest.utils.WifiUitils
 import com.eaphone.sdktest.utils.MyUtils
 import com.eaphone.sdktest.utils.setWidthHeight
 import kotlinx.android.synthetic.main.activity_wifi_set.*
@@ -33,7 +33,6 @@ import kotlinx.android.synthetic.main.titlebar_white.*
 class WifiSetActivity : AppCompatActivity(), BleBindResultListener {
 
 
-    private var mWifiAdmin: EspWifiAdminSimple? = null
     private var is5G = false
     private var mContext: Context? = null
     private var mBluetoothDevice: BluetoothDevice? = null
@@ -56,7 +55,6 @@ class WifiSetActivity : AppCompatActivity(), BleBindResultListener {
 
     private fun initData() {
         mBluetoothDevice = intent.getParcelableExtra("item")
-        mWifiAdmin = EspWifiAdminSimple(mContext)
         checkPermission()
     }
 
@@ -165,11 +163,11 @@ class WifiSetActivity : AppCompatActivity(), BleBindResultListener {
 
     override fun onResume() {
         super.onResume()
-        val apSsid = mWifiAdmin?.wifiConnectedSsid
+        val apSsid = WifiUitils.getWifiConnectedSsid(mContext)
         if (apSsid != null) {
             tvApSssidConnected.text = apSsid
-            if (mWifiAdmin?.is5GHz!!) {
-                if (mWifiAdmin?.is5Gor4G(apSsid)!!) {
+            if (WifiUitils.is5GHz(mContext)) {
+                if (WifiUitils.is5Gor4G(mContext, apSsid)) {
                     is5G = false
                     edtApPassword.hint = "请输入Wi-Fi密码"
                     edtApPassword.isEnabled = true

@@ -9,15 +9,9 @@ import android.util.AttributeSet
 import android.view.View
 
 /**
- *
- * @ClassName: CardiographView
- * @Description: java类作用描述
- * @Author: he lin hua
- * @CreateDate: 2021/11/18 14:38
- * @Version: 2.0
+ * 网格背景
+ * hlh
  */
-
-
 class CardiographView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     //画笔

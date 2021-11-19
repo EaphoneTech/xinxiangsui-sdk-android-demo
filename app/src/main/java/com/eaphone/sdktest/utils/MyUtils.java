@@ -7,15 +7,6 @@ import android.os.Looper;
 import android.util.TypedValue;
 
 
-/**
- * @ClassName: MyUtils
- * @Description: java类作用描述
- * @Author: he lin hua
- * @CreateDate: 2020/12/2 13:58
- * @Version: 2.0
- */
-
-
 public class MyUtils {
     /**
      * 手机是否开启位置服务，如果没有开启那么所有app将不能使用定位功能

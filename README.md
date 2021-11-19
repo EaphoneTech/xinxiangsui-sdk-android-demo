@@ -7,7 +7,7 @@
 一：Gradle：
 在module的build.gradle文件中加入以下依赖：
 ```language
-implementation 'io.github.a312588726:lib_sdk:1.0.0'
+implementation 'io.github.a312588726:lib_sdk:1.0.1'
 ```
 在项目根目录的build.gradle文件下添加以下：
 ```language
@@ -20,8 +20,16 @@ allprojects {
 
 ```
 
-二：jar包:
-将EaphoneSDKDemo中libs目录下的 EphoneSDK.jar 拷贝至项目libs目录下即可
+二：aar包:
+将EaphoneSDKDemo中libs目录下的 lib_sdk-1.0.1.aar 拷贝至项目libs目录下,
+
+```language
+dependencies {
+    compile(name:'lib_sdk-1.0.1', ext:'aar')
+}
+```
+
+
 ## 权限申请
 ```language
 
@@ -31,6 +39,25 @@ allprojects {
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 ```
+## SDK初始化
+使用心相随sdk,需要先在平台申请app_key
+
+```language
+EaphoneInterface.init(mContext, app_key, mInitResultListener)
+```
+参数说明
+
+|参数|类型|说明|
+|-|-|-|
+|mContext|Context|--|
+|app_key|String|心相随平台申请的app_key|
+|mInitResultListener|InitResultListener|初始化回调函数|
+
+**InitResultListener**
+|方法|说明|
+|-|-|
+|onSucceed（）|初始化成功|
+|onError（String result）|初始化失败，result（失败原因）|
 
 ## 设备列表
 获取附近心相随设备列表，需要打开蓝牙和获取定位权限。
@@ -81,7 +108,7 @@ EaphoneInterface.netBind(mContext, mBluetoothDevice, wifi_name, wifi_password, m
 获取心相随设备的实时波形数据
 代码示例：
 ```language
-  EaphoneInterface.getECGData(mContext, mBluetoothDevice, EcgDataResultListener)
+  EaphoneInterface.getECGData(mContext, mBluetoothDevice, mEcgDataResultListener)
 ```
 参数说明
 

@@ -7,12 +7,6 @@ import android.view.WindowManager
 import com.eaphone.sdktest.R
 import kotlinx.android.synthetic.main.dialog_type.view.*
 
-/**
- * @ClassName       TypeDialog
- * @Model           todo
- * @Description     操作提示对话框
- * @Author          he lin hua
- */
 class TypeDialog(context: Context, action: (Int) -> Unit) : BaseDialog(context) {
 
     companion object {

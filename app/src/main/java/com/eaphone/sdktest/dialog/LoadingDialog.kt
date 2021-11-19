@@ -10,13 +10,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.eaphone.sdktest.R
 
-/**
- * @ClassName       LoadingDialog
- * @Model           todo
- * @Description     加载中对话框
- * @Sign            沉迷学习不能自拔
- * @Date            2019/7/5 10:43
- */
 class LoadingDialog(context: Context) : Dialog(context) {
 
     private var tvMsg: TextView? = null
