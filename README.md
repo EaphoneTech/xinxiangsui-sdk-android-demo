@@ -2,12 +2,12 @@
 ## 说明
 易风设备管理SDK，包括获取设备列表，设备配网和设备实时波形数据，根据需要您可以选择实现相关接口
 
-[EaphoneSDKDemo](https://github.com/a312588726/EaphoneSDK)
+[Demo](https://github.com/EaphoneTech/xinxiangsui-sdk-android-demo)
 ## 集成
 一：Gradle：
 在module的build.gradle文件中加入以下依赖：
 ```language
-implementation 'io.github.a312588726:lib_sdk:1.0.1'
+implementation 'io.github.eaphonetech:lib_sdk:1.0.1'
 ```
 在项目根目录的build.gradle文件下添加以下：
 ```language

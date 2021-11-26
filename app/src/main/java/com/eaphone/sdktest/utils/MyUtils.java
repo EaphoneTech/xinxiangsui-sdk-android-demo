@@ -3,7 +3,6 @@ package com.eaphone.sdktest.utils;
 import android.content.Context;
 import android.content.res.Resources;
 import android.location.LocationManager;
-import android.os.Looper;
 import android.util.TypedValue;
 
 
@@ -52,5 +51,5 @@ public class MyUtils {
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, resources.getDisplayMetrics());
         return (int) px;
     }
-    
+
 }

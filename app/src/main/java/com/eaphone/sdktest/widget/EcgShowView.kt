@@ -85,7 +85,6 @@ open class EcgShowView(context: Context, attrs: AttributeSet) : View(context, at
         intervalColumn = mWidth / column
         row = (mHeight / mGridstrokeWidthAndHeight).toInt()
         intervalRow = intervalColumn
-
         initData()
     }
 
@@ -114,13 +113,13 @@ open class EcgShowView(context: Context, attrs: AttributeSet) : View(context, at
         postInvalidate()
     }
 
-
     fun reset(){
         refreshList= arrayListOf()
         dataList = arrayListOf()
         scrollIndex = 0
         postInvalidate()
     }
+
     private fun drawHeartRefresh(canvas: Canvas) {
         paint!!.reset()
         path!!.reset()
