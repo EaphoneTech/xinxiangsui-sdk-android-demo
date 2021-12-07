@@ -7,7 +7,7 @@
 一：Gradle：
 在module的build.gradle文件中加入以下依赖：
 ```language
-implementation 'io.github.eaphonetech:lib_sdk:1.0.1'
+implementation 'io.github.eaphonetech:lib_sdk:1.0.2'
 ```
 在项目根目录的build.gradle文件下添加以下：
 ```language
@@ -25,7 +25,7 @@ allprojects {
 
 ```language
 dependencies {
-    compile(name:'lib_sdk-1.0.1', ext:'aar')
+    compile(name:'lib_sdk-1.0.2', ext:'aar')
 }
 ```
 
