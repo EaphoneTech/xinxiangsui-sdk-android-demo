@@ -41,6 +41,6 @@ dependencies {
     implementation 'com.xw.repo:PullToRefresh:2.1@aar'
     implementation 'com.blankj:utilcode:1.23.7'
     implementation files('libs/lib_sdk-1.0.1.aar')
-  //  implementation 'io.github.eaphonetech:lib_sdk:1.0.1'
- //   api project(path: ':lib_sdk')
+   // implementation 'io.github.eaphonetech:lib_sdk:1.0.1'
+    api project(path: ':lib_sdk')
 }

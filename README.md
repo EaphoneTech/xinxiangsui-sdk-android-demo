@@ -102,6 +102,7 @@ EaphoneInterface.netBind(mContext, mBluetoothDevice, wifi_name, wifi_password, m
 |onBindStarted（）|配网开始|
 |onBindSucceed（）|配网成功|
 |onBindError（String result）|配网失败，result（失败原因）|
+|onConnetSucceed（）|设备连接成功|
 
 ## 实时波形数据
 

@@ -69,21 +69,23 @@ class CardiographView(context: Context, attrs: AttributeSet) : View(context, att
         //横线个数
         val hSNum = mHeight / mSGridWidth
         mPaint?.color = mSGridColor
-        mPaint?.strokeWidth = 2f
+        mPaint?.strokeWidth = 1f
         //画竖线
+        val s = mGridWidth/5f
         for (i in 0 until vSNum + 1) {
-            canvas.drawLine((i * mSGridWidth).toFloat(), 0f, (i * mSGridWidth).toFloat(), mHeight.toFloat(), mPaint!!)
+            canvas.drawLine(i * s, 0f, i * s, mHeight.toFloat(), mPaint!!)
         }
         //画横线
         for (i in 0 until hSNum + 1) {
-            canvas.drawLine(0f, (i * mSGridWidth).toFloat(), mWidth.toFloat(), (i * mSGridWidth).toFloat(), mPaint!!)
+            canvas.drawLine(0f, i * s, mWidth.toFloat(), i * s, mPaint!!)
         }
+        //-------画大网格-----
         //竖线个数
         val vNum = mWidth / mGridWidth
         //横线个数
         val hNum = mHeight / mGridWidth
         mPaint?.color = mGridColor
-        mPaint?.strokeWidth = 2f
+        mPaint?.strokeWidth = 1.2f
         //画竖线
         for (i in 0 until vNum + 1) {
             canvas.drawLine((i * mGridWidth).toFloat(), 0f, (i * mGridWidth).toFloat(), mHeight.toFloat(), mPaint!!)

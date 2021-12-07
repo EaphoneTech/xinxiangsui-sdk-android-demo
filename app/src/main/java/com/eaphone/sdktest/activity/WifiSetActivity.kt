@@ -158,9 +158,12 @@ class WifiSetActivity : AppCompatActivity(), BleBindResultListener {
     }
 
     override fun onBindStarted() {
-        showLoadingDialog("正在配网...")
+        showLoadingDialog("正在连接设备...")
     }
 
+    override fun onConnetSucceed() {
+        showLoadingDialog("设备连接成功，配网中......")
+    }
     override fun onResume() {
         super.onResume()
         val apSsid = WifiUitils.getWifiConnectedSsid(mContext)

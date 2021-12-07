@@ -54,7 +54,7 @@ public class DeviceListAdapter extends BaseAdapter {
         View view;
         ViewHolder viewHolder;
         if (convertView == null){
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_device_, null);
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_device, null);
             viewHolder = new ViewHolder();
             viewHolder.tv_name =  view.findViewById(R.id.tv_name);
             view.setTag(viewHolder);

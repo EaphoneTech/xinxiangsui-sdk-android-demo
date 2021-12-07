@@ -29,6 +29,7 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
     private var showPpgValues = arrayListOf<Int>()
     private var timeCunt = 10L
     private var maxRow = 300
+    private var isFistData = true
 
     private val mLoadingDialog by lazy {
         LoadingDialog(mContext!!)
@@ -62,29 +63,37 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
         if (!TextUtils.isEmpty(msg)) {
             mLoadingDialog.setMessage(msg)
         }
-        mLoadingDialog.show()
+        if(!mLoadingDialog.isShowing){
+            mLoadingDialog.show()
+        }
     }
 
     override fun onConnetSucceed(isNewDevice: Boolean) {
         runOnUiThread {
             mLoadingDialog.dismiss()
+            val w_px = ScreenUtils.getScreenWidth()
+            val padding_w = ConvertUtils.dp2px(20f)
+            //每个大格子的宽度
+            val w = (w_px-padding_w)/15
+            //背景网格高度
+            val h = w*6
+            val lp = layou_ecg.layoutParams
+            lp.height = h
+            layou_ecg.layoutParams = lp
             if(isNewDevice){
+                layou_ppg.layoutParams = lp
                 layou_type.visibility = View.VISIBLE
                 layou_ppg.visibility = View.VISIBLE
                 timeCunt = 33L
                 maxRow = 90
-                showPpgTimer()
-
             } else{
                 layou_ppg.visibility = View.GONE
                 layou_type.visibility = View.GONE
                 timeCunt = 10L
                 maxRow = 300
-                val lp = layou_ecg.layoutParams
-                lp.height = MyUtils.toPx(180f)
-                layou_ecg.layoutParams = lp
             }
-            showEcgTimer()
+            layou_main.visibility = View.VISIBLE
+            showTimer()
         }
     }
 
@@ -115,6 +124,11 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
         runOnUiThread {
             if(isDown){
                 tv_status.text = "离座停止测量"
+                if(isFistData){
+                    ecgview.reset()
+                    ppgview.reset()
+                    isFistData = false
+                }
             } else{
                 layou_error_ecg.visibility = View.GONE
                 layou_error_ppg.visibility = View.GONE
@@ -123,8 +137,7 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
                 showEcgValues = arrayListOf()
                 showPpgIndex = 0
                 showPpgValues = arrayListOf()
-                ecgview.reset()
-                ppgview.reset()
+                isFistData = true
             }
         }
     }
@@ -157,12 +170,15 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
     }
 
     private var showEcgIndex = 0
-    private var mShowEcgTimer: Timer? = null
-    private fun showEcgTimer() {
+    private var showPpgIndex = 0
+    private var mShowTimer: Timer? = null
+    private fun showTimer() {
         ecgview.setData(showEcgValues, ecgview.SHOW_MODEL_DYNAMIC_SCROLL, maxRow)
         ecgview.setLinColor( ContextCompat.getColor(mContext!!,R.color.colorRed))
-        if (mShowEcgTimer == null) {
-            mShowEcgTimer = Timer()
+        ppgview.setData(showPpgValues, ppgview.SHOW_MODEL_DYNAMIC_SCROLL, maxRow)
+        ppgview.setLinColor( ContextCompat.getColor(mContext!!,R.color.colorgreen))
+        if (mShowTimer == null) {
+            mShowTimer = Timer()
             val mTimerTask = object : TimerTask() {
                 override fun run() {
                     runOnUiThread {
@@ -171,23 +187,6 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
                             ecgview.showLine(va)
                             showEcgIndex++
                         }
-                    }
-                }
-            }
-            mShowEcgTimer?.schedule(mTimerTask, 200, timeCunt)
-        }
-    }
-
-    private var showPpgIndex = 0
-    private var mShowPpgTimer: Timer? = null
-    private fun showPpgTimer() {
-        ppgview.setData(showPpgValues, ppgview.SHOW_MODEL_DYNAMIC_SCROLL, maxRow)
-        ppgview.setLinColor( ContextCompat.getColor(mContext!!,R.color.colorgreen))
-        if (mShowPpgTimer == null) {
-            mShowPpgTimer = Timer()
-            val mTimerTask = object : TimerTask() {
-                override fun run() {
-                    runOnUiThread {
                         if (showPpgValues.isNotEmpty() && showPpgValues.size > showPpgIndex) {
                             val va = showPpgValues[showPpgIndex]
                             ppgview.showLine(va)
@@ -196,7 +195,7 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
                     }
                 }
             }
-            mShowPpgTimer?.schedule(mTimerTask, 200, timeCunt)
+            mShowTimer?.schedule(mTimerTask, 100, timeCunt)
         }
     }
 
@@ -215,10 +214,8 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
     }
     override fun onDestroy() {
         super.onDestroy()
-        mShowEcgTimer?.cancel()
-        mShowEcgTimer = null
-        mShowPpgTimer?.cancel()
-        mShowPpgTimer = null
+        mShowTimer?.cancel()
+        mShowTimer = null
         EaphoneInterface.disConnetDevice(mContext!!)
     }
 
