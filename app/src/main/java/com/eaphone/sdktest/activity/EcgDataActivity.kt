@@ -35,6 +35,7 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
         LoadingDialog(mContext!!)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ecg)
@@ -59,6 +60,13 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
         }
     }
 
+    private fun showHintDialog(){
+        CommonDialog(mContext!!, false, "提示", "监测到您已离坐，是否退出实时监测？", "继续监测", "退出") {
+            if (it == CommonDialog.BNT_YES) {
+                ActivityUtils.finishToActivity(MainActivity::class.java, false)
+            }
+        }.show()
+    }
     private fun showLoadingDialog(msg: String?) {
         if (!TextUtils.isEmpty(msg)) {
             mLoadingDialog.setMessage(msg)
@@ -99,7 +107,7 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
 
     override fun onDataResult(time: Long, ecgData: List<Int>?, ppgData: List<Int>?) {
         runOnUiThread {
-            tv_time.text = MyUtils.formatSeconds(time)
+            tv_time.text = "监测时长：${MyUtils.formatSeconds(time)}"
             if(ecgData != null){
                 for(item in ecgData){
                     showEcgValues.add(item)
@@ -113,6 +121,13 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
         }
     }
 
+    override fun onThighTemperatureResult(thigh_temperature: String?) {
+        runOnUiThread {
+            if (!TextUtils.isEmpty(thigh_temperature)) {
+                tv_thigh_temperature.text = "腿温：$thigh_temperature ℃"
+            }
+        }
+    }
     override fun onError(result: String?) {
         runOnUiThread {
             mLoadingDialog.dismiss()
@@ -130,6 +145,7 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
                     isFistData = false
                 }
             } else{
+                showHintDialog()
                 layou_error_ecg.visibility = View.GONE
                 layou_error_ppg.visibility = View.GONE
                 tv_status.text = "落座开始测量"
@@ -144,8 +160,7 @@ class EcgDataActivity : Activity(), EcgDataResultListener {
 
     override fun onEcgCuntResult(heart_rate: Int) {
         runOnUiThread {
-            tv_ecg.text = "$heart_rate bpm"
-            layou_xin.visibility = View.VISIBLE
+            tv_ecg.text = "心率：$heart_rate bpm"
         }
     }
 

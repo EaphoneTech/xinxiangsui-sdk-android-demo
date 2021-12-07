@@ -7,7 +7,7 @@
 一：Gradle：
 在module的build.gradle文件中加入以下依赖：
 ```language
-implementation 'io.github.eaphonetech:lib_sdk:1.0.2'
+implementation 'io.github.eaphonetech:lib_sdk:1.0.3'
 ```
 在项目根目录的build.gradle文件下添加以下：
 ```language
@@ -21,11 +21,11 @@ allprojects {
 ```
 
 二：aar包:
-将EaphoneSDKDemo中libs目录下的 lib_sdk-1.0.1.aar 拷贝至项目libs目录下,
+将EaphoneSDKDemo中libs目录下的 lib_sdk-1.0.3.aar 拷贝至项目libs目录下,
 
 ```language
 dependencies {
-    compile(name:'lib_sdk-1.0.2', ext:'aar')
+    compile(name:'lib_sdk-1.0.3', ext:'aar')
 }
 ```
 
@@ -128,6 +128,7 @@ EaphoneInterface.netBind(mContext, mBluetoothDevice, wifi_name, wifi_password, m
 |onECGStatusResult（int ecg_status）|ecg数据信号状态，返回：ecg_status (1=正常 or -1=质量差)|
 |onPPGStatusResult（int ppg_status）|ppg数据信号状态，返回：ppg_status (1=正常 or -1=质量差)|
 |onEcgCuntResult（int heart_rate）|实时心率，返回：heart_rate(心率值)|
+|onThighTemperatureResult(String thigh_temperature)|腿温，返回：thigh_temperature(腿温值)|
 |onDataResult（long time, List<Integer> ecgData, List<Integer> ppgData）|实时波行数据，返回：time(监测时长)，ecgData（每秒ecg数据,item值max=30000, min=-30000），ppgData（每秒ppg数据，,item值max=30000, min=-30000）|
 
 ## 退出设备连接

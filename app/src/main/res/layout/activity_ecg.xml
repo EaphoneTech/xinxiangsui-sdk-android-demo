@@ -15,7 +15,7 @@
             android:layout_height="match_parent">
 
         <LinearLayout
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/layou_main"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
@@ -184,63 +184,38 @@
             <LinearLayout
                     android:orientation="horizontal"
                     android:padding="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <LinearLayout
-                        android:id="@+id/layou_xin"
-                        android:visibility="invisible"
-                        android:layout_width="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:orientation="horizontal"
-                        android:layout_height="wrap_content">
-                    <ImageView
-                            android:id="@+id/image_xin"
-                            android:src="@mipmap/icon_xin"
-                            android:layout_marginTop="2dp"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"/>
-                    <TextView
-                            android:id="@+id/tv_xinlv"
-                            android:text="心率："
-                            android:layout_marginLeft="2dp"
-                            android:textColor="@color/color333"
-                            android:textSize="14sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/tv_ecg"
+                        android:text="心率：--"
+                        android:textColor="@color/color333"
+                        android:textSize="14sp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"/>
 
-                    <TextView
-                            android:id="@+id/tv_ecg"
-                            android:textColor="@color/color333"
-                            android:textSize="14sp"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"/>
-                </LinearLayout>
+                <TextView
+                        android:id="@+id/tv_thigh_temperature"
+                        android:text="腿温：--"
+                        android:textColor="@color/color333"
+                        android:textSize="14sp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"/>
 
-
-                <LinearLayout android:layout_width="0dp"
-                              android:paddingRight="10dp"
-                              android:layout_weight="1"
-                              android:gravity="right"
-                              android:orientation="horizontal"
-                              android:layout_height="wrap_content">
-
-                    <TextView
-                            android:text="监测时长："
-                            android:textColor="@color/color333"
-                            android:textSize="14sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-
-                    <TextView
-                            android:id="@+id/tv_time"
-                            android:text="0秒"
-                            android:textColor="@color/color333"
-                            android:textSize="14sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                </LinearLayout>
+                <TextView
+                        android:id="@+id/tv_time"
+                        android:text="监测时长：--"
+                        android:gravity="right"
+                        android:textColor="@color/color333"
+                        android:textSize="14sp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.3"
+                        android:layout_height="wrap_content"/>
 
             </LinearLayout>
 

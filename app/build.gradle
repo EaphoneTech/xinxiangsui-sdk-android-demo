@@ -40,8 +40,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'com.xw.repo:PullToRefresh:2.1@aar'
     implementation 'com.blankj:utilcode:1.23.7'
-  //  implementation files('libs/lib_sdk-1.0.2.aar')
-    implementation 'io.github.eaphonetech:lib_sdk:1.0.2'
-   // api project(path: ':lib_sdk')
+    implementation files('libs/lib_sdk-1.0.3.aar')
+  //  implementation 'io.github.eaphonetech:lib_sdk:1.0.3'
+  //  api project(path: ':lib_sdk')
 }
 
