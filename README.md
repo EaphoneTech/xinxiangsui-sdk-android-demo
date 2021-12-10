@@ -163,9 +163,10 @@ EaphoneInterface.netBind(mContext, mBluetoothDevice, wifi_name, wifi_password, m
 |onSucceed（EcgReportData data）|成功，返回 data (EcgReportData)|
 |onError（String errcode, String message）|失败，返回： errcode（错误码，具体参考ErrorCode类） message（错误原因）|
 
-类说明
+
 **EcgReportData**
 |名称|类型|说明|
+|-|-|-|
 |batch_id|String|落座id|
 |begin_time|String|开始时间|
 |end_time|String|结束时间|
@@ -177,7 +178,7 @@ EaphoneInterface.netBind(mContext, mBluetoothDevice, wifi_name, wifi_password, m
 |respiration|int|呼吸率|
 |duration|long|监测时长|
 
-**具体参考ErrorCode类**
+**ErrorCode类**
 
 说明：SDK错误码，错误消息说明文件
 
