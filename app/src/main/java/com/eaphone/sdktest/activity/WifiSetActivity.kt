@@ -90,7 +90,7 @@ class WifiSetActivity : AppCompatActivity(), BleBindResultListener {
     }
 
     private fun connet() {
-        if (is5G) run {
+        if (is5G){
             startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
         } else {
             if (!NetworkUtils.getWifiEnabled() || !NetworkUtils.isWifiConnected()) { //wifi已打开并可用

@@ -7,15 +7,20 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.support.annotation.RequiresApi
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.blankj.utilcode.util.BarUtils
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.ToastUtils
+import com.eaphone.lib_sdk.common.EcgReportData
 import com.eaphone.lib_sdk.listener.BleScanListener
+import com.eaphone.lib_sdk.listener.EcgDataCallBack
+import com.eaphone.lib_sdk.listener.InitResultListener
 import com.eaphone.lib_sdk.sdk.EaphoneInterface
 import com.eaphone.sdktest.R
 import com.eaphone.sdktest.adapter.DeviceListAdapter
@@ -57,9 +62,14 @@ class MainActivity : AppCompatActivity(),PullToRefreshLayout.OnRefreshListener, 
 
     private fun initData(){
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        checkOpenBle()
+        //模拟SDK初始化成功后
+        Handler().postDelayed({
+            checkOpenBle()
+        }, 2000)
         EaphoneInterface.setDebugMode(true)
+        test()
     }
+
 
 
     private fun initEvent(){
@@ -78,6 +88,25 @@ class MainActivity : AppCompatActivity(),PullToRefreshLayout.OnRefreshListener, 
             }
             dialog.show()
         }
+    }
+
+    private fun test(){
+       // EaphoneInterface.init(mContext!!, "6152cb8965ae3256fa67fd13", "e9e04d642b084cd5b4813e3700429f6a", object:InitResultListener{
+
+    }
+    private fun test1(){
+        EaphoneInterface.init(mContext!!, "6152cb8965ae3256fa67fd13", "e9e04d642b084cd5b4813e3700429f6a", object:InitResultListener{
+            override fun onSucceed() {
+
+            }
+
+            override fun onError(result: String?) {
+
+            }
+
+
+
+        })
     }
 
     private fun checkOpenBle(){

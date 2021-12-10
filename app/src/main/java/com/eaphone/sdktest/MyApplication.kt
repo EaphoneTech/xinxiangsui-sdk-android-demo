@@ -1,17 +1,25 @@
 package com.eaphone.sdktest
 
 import android.app.Application
-import android.content.Context
+import com.eaphone.lib_sdk.listener.InitResultListener
 import com.eaphone.lib_sdk.sdk.EaphoneInterface
 
 
 class MyApplication : Application() {
+
     override fun onCreate() {
         super.onCreate()
-       // EaphoneInterface.init(this, "2802e5ee2c3e4d7e8d960aded9d38c5e", null)
+        EaphoneInterface.init(this, "app_id", "app_secret", object:
+            InitResultListener {
+            override fun onSucceed() {
+
+            }
+
+            override fun onError(result: String?) {
+
+            }
+        })
     }
 
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-    }
+
 }

@@ -6,8 +6,15 @@
 ## 集成
 一：Gradle：
 在module的build.gradle文件中加入以下依赖：
+SDK网络框架采用okhttp3，为了您能正常使用，需如下依赖
 ```language
-implementation 'io.github.eaphonetech:lib_sdk:1.0.3'
+dependencies {
+    implementation 'io.github.eaphonetech:lib_sdk:1.0.4'
+    //下面无论是maven途径还是.aar 都需要，你也可以根据项目需要替换成相应版本号
+    implementation "com.squareup.okhttp3:okhttp:4.9.3"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
+    implementation 'com.google.code.gson:gson:2.8.9'
+}
 ```
 在项目根目录的build.gradle文件下添加以下：
 ```language
@@ -21,18 +28,22 @@ allprojects {
 ```
 
 二：aar包:
-将EaphoneSDKDemo中libs目录下的 lib_sdk-1.0.3.aar 拷贝至项目libs目录下,
+将EaphoneSDKDemo中libs目录下的 lib_sdk-1.0.4.aar 拷贝至项目libs目录下,
 
 ```language
 dependencies {
-    compile(name:'lib_sdk-1.0.3', ext:'aar')
+    implementation files('libs/lib_sdk-1.0.4.aar')
+    //下面无论是maven途径还是.aar 都需要，你也可以根据项目需要替换成相应版本号
+    implementation "com.squareup.okhttp3:okhttp:4.9.3"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
+    implementation 'com.google.code.gson:gson:2.8.9'
 }
 ```
 
 
 ## 权限申请
 ```language
-
+<uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.BLUETOOTH" />
 <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -60,7 +71,7 @@ EaphoneInterface.init(mContext, app_key, mInitResultListener)
 |onError（String result）|初始化失败，result（失败原因）|
 
 ## 设备列表
-获取附近心相随设备列表，需要打开蓝牙和获取定位权限。
+获取附近心相随设备列表，需要打开蓝牙和获取定位权限/GPS（特殊终端无需GPS，具体实现可参考蓝牙通信协议）。
 代码示例：
 ```language
 EaphoneInterface.getBindDevices(mContext, mBleScanListener)
@@ -129,10 +140,50 @@ EaphoneInterface.netBind(mContext, mBluetoothDevice, wifi_name, wifi_password, m
 |onPPGStatusResult（int ppg_status）|ppg数据信号状态，返回：ppg_status (1=正常 or -1=质量差)|
 |onEcgCuntResult（int heart_rate）|实时心率，返回：heart_rate(心率值)|
 |onThighTemperatureResult(String thigh_temperature)|腿温，返回：thigh_temperature(腿温值)|
-|onDataResult（long time, List<Integer> ecgData, List<Integer> ppgData）|实时波行数据，返回：time(监测时长)，ecgData（每秒ecg数据,item值max=30000, min=-30000），ppgData（每秒ppg数据，,item值max=30000, min=-30000）|
+|onDataResult（long time, List<Integer> ecgData, List<Integer> ppgData1, List<Integer> ppgData2）|实时波行数据，返回：time(监测时长)，ecgData（每秒ecg数据,item值max=30000, min=-30000），ppgData1（每秒ppg数据，,item值max=30000, min=-30000），ppgData2（每秒ppg数据，,item值max=30000, min=-30000|
+
+## 数据分析
+
+获取心相随设备最近一次测量的数据分析结果
+代码示例：
+```language
+  EaphoneInterface.getReportData(mBluetoothDevice, mEcgDataCallBack)
+```
+参数说明
+
+|参数|类型|说明|
+|-|-|-|
+|mContext|Context|--|
+|mBluetoothDevice|BluetoothDevice|心相随设备|
+|mEcgDataCallBack|EcgDataCallBack|分析数据的回调函数|
+
+**EcgDataCallBack**
+|方法|说明|
+|-|-|
+|onSucceed（EcgReportData data）|成功，返回 data (EcgReportData)|
+|onError（String errcode, String message）|失败，返回： errcode（错误码，具体参考ErrorCode类） message（错误原因）|
+
+类说明
+**EcgReportData**
+|名称|类型|说明|
+|batch_id|String|落座id|
+|begin_time|String|开始时间|
+|end_time|String|结束时间|
+|heart_beats|int|总心搏|
+|heart_rate|int|心率|
+|heart_rate_max|int|最快心率|
+|heart_rate_min|int|最慢心率|
+|leg_temperature|double|腿温|
+|respiration|int|呼吸率|
+|duration|long|监测时长|
+
+**具体参考ErrorCode类**
+
+说明：SDK错误码，错误消息说明文件
+
 
 ## 退出设备连接
-相关页面关闭，需要调用退出接口，防止内存泄漏
+相关页面关闭，需要调用退出接口，防止内存泄漏和蓝牙设备一直不断开连接
 代码示例：
 ```language
 

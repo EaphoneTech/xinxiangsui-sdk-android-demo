@@ -23,6 +23,7 @@
             android:requestLegacyExternalStorage="true"
             android:resizeableActivity="false"
             android:networkSecurityConfig="@xml/network_https_config"
+
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
 
@@ -54,6 +55,12 @@
                 android:name="com.eaphone.sdktest.activity.EcgDataActivity"
                 android:screenOrientation="portrait"
                 android:label="实时波形" />
+
+
+        <activity
+                android:name="com.eaphone.sdktest.activity.ReportDataActivity"
+                android:screenOrientation="portrait"
+                android:label="数据分析" />
     </application>
 
 </manifest>

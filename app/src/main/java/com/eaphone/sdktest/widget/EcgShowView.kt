@@ -254,23 +254,6 @@ open class EcgShowView(context: Context, attrs: AttributeSet) : View(context, at
     fun setLinColor(color:Int){
         mLineColor = color
     }
-    private fun drawGrid(canvas: Canvas) {
-        //画大格子
-//        paint!!.style = Paint.Style.STROKE
-//        paint!!.color = mGridColor
-//        paint!!.strokeWidth = mGridLineWidth
-//        paint!!.isAntiAlias = true
-//        for (i in 0..column) {
-//            val iTempC = i * intervalColumn
-//            path!!.moveTo(iTempC, 0f)
-//            path!!.lineTo(iTempC, mHeight)
-//        }
-//        for (i in 0..row) {
-//            path!!.moveTo(0f, i * intervalRow)
-//            path!!.lineTo(mWidth, i * intervalRow)
-//        }
-//        canvas.drawPath(path!!, paint!!)
-    }
 
     fun setData(data: ArrayList<Int>?, model: Int, maxRow:Int) {
         this.dataList = data
