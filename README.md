@@ -9,7 +9,7 @@
 SDK网络框架采用okhttp3，为了您能正常使用，需如下依赖
 ```language
 dependencies {
-    implementation 'io.github.eaphonetech:lib_sdk:1.0.4'
+    implementation 'io.github.eaphonetech:lib_sdk:1.0.5'
     //下面无论是maven途径还是.aar 都需要，你也可以根据项目需要替换成相应版本号
     implementation "com.squareup.okhttp3:okhttp:4.9.3"
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
@@ -28,11 +28,11 @@ allprojects {
 ```
 
 二：aar包:
-将EaphoneSDKDemo中libs目录下的 lib_sdk-1.0.4.aar 拷贝至项目libs目录下,
+将EaphoneSDKDemo中libs目录下的 lib_sdk-1.0.5.aar 拷贝至项目libs目录下,
 
 ```language
 dependencies {
-    implementation files('libs/lib_sdk-1.0.4.aar')
+    implementation files('libs/lib_sdk-1.0.5.aar')
     //下面无论是maven途径还是.aar 都需要，你也可以根据项目需要替换成相应版本号
     implementation "com.squareup.okhttp3:okhttp:4.9.3"
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
