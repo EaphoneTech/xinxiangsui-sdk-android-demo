@@ -25,7 +25,7 @@
                 android:textSize="14sp"
                 android:gravity="center"
                 android:background="@drawable/shape_type_bg_8"
-                android:text="实时波行"
+                android:text="实时波形"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
                 android:textColor="@color/text_white"/>

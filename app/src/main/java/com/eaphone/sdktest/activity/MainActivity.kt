@@ -17,9 +17,7 @@ import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.ToastUtils
-import com.eaphone.lib_sdk.common.EcgReportData
 import com.eaphone.lib_sdk.listener.BleScanListener
-import com.eaphone.lib_sdk.listener.EcgDataCallBack
 import com.eaphone.lib_sdk.listener.InitResultListener
 import com.eaphone.lib_sdk.sdk.EaphoneInterface
 import com.eaphone.sdktest.R
@@ -39,7 +37,6 @@ class MainActivity : AppCompatActivity(),PullToRefreshLayout.OnRefreshListener, 
     private var mBluetoothAdapter: BluetoothAdapter?= null
     private val BT_OPEN_GPS = 10008
     private val BT_OPEN_REQUIRE_CODE = 10009
-    private val ITEM_CODE = 10020
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +48,7 @@ class MainActivity : AppCompatActivity(),PullToRefreshLayout.OnRefreshListener, 
         view_status_bar.setWidthHeight(view_status_bar.width, BarUtils.getStatusBarHeight())
         initView()
         initEvent()
+        initData()
     }
 
     private fun initView(){
@@ -67,10 +65,7 @@ class MainActivity : AppCompatActivity(),PullToRefreshLayout.OnRefreshListener, 
             checkOpenBle()
         }, 2000)
         EaphoneInterface.setDebugMode(true)
-        test()
     }
-
-
 
     private fun initEvent(){
         list_view.setOnItemClickListener { parent, view, position, id ->
@@ -83,30 +78,11 @@ class MainActivity : AppCompatActivity(),PullToRefreshLayout.OnRefreshListener, 
                 } else{
                     val intent = Intent(mContext, WifiSetActivity::class.java)
                     intent.putExtra("item", item)
-                    startActivityForResult(intent, ITEM_CODE)
+                    startActivity(intent)
                 }
             }
             dialog.show()
         }
-    }
-
-    private fun test(){
-       // EaphoneInterface.init(mContext!!, "6152cb8965ae3256fa67fd13", "e9e04d642b084cd5b4813e3700429f6a", object:InitResultListener{
-
-    }
-    private fun test1(){
-        EaphoneInterface.init(mContext!!, "6152cb8965ae3256fa67fd13", "e9e04d642b084cd5b4813e3700429f6a", object:InitResultListener{
-            override fun onSucceed() {
-
-            }
-
-            override fun onError(result: String?) {
-
-            }
-
-
-
-        })
     }
 
     private fun checkOpenBle(){
@@ -206,14 +182,6 @@ class MainActivity : AppCompatActivity(),PullToRefreshLayout.OnRefreshListener, 
                 pullToRefreshLayout.visibility = View.GONE
                 tv_erro.visibility = View.VISIBLE
             }
-        } else if(requestCode == ITEM_CODE){
-//            mAdapter?.clearData()
-//            if(!mBluetoothAdapter?.isEnabled!!){
-//                val startBt = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-//                startActivityForResult(startBt, BT_OPEN_REQUIRE_CODE)
-//            } else{
-//                EaphoneInterface.getBindDevices(mContext, mBleScanListener)
-//            }
         }
     }
 
@@ -226,16 +194,6 @@ class MainActivity : AppCompatActivity(),PullToRefreshLayout.OnRefreshListener, 
             ToastUtils.showShort("再按一次退出应用")
             exitTime = backTime
 
-        }
-    }
-
-
-    private var isFist = true
-    override fun onResume() {
-        super.onResume()
-        if(isFist){
-            initData()
-            isFist = false
         }
     }
 

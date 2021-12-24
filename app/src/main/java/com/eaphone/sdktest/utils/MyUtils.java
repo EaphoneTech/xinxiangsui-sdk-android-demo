@@ -3,10 +3,16 @@ package com.eaphone.sdktest.utils;
 import android.content.Context;
 import android.content.res.Resources;
 import android.location.LocationManager;
+import android.os.Looper;
 import android.util.TypedValue;
 
 
 public class MyUtils {
+
+    public static boolean isMainThread() {
+        return Looper.getMainLooper().getThread() == Thread.currentThread();
+    }
+
     /**
      * 手机是否开启位置服务，如果没有开启那么所有app将不能使用定位功能
      */

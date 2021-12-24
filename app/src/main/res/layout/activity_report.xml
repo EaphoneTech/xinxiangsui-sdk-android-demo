@@ -188,7 +188,7 @@
 
             <TextView
 
-                    android:text="体温"
+                    android:text="呼吸率"
                     android:textColor="@color/text_white"
                     android:textSize="16sp"
                     android:layout_width="wrap_content"

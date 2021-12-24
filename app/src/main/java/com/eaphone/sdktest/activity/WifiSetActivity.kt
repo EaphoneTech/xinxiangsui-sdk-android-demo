@@ -135,26 +135,22 @@ class WifiSetActivity : AppCompatActivity(), BleBindResultListener {
     }
 
     override fun onBindError(result: String?) {
-        EaphoneInterface.disConnetDevice(mContext!!)
-        runOnUiThread {
-            mLoadingDialog.dismiss()
-            val errorDialog = CommonDialog(mContext!!, false, "提示", "配网失败,原因：$result", "取消", "重试") {
-                if(it == CommonDialog.BNT_YES){
-                    connet()
-                }
+        mLoadingDialog.dismiss()
+        val errorDialog = CommonDialog(mContext!!, false, "提示", "配网失败,原因：$result", "取消", "重试") {
+            if(it == CommonDialog.BNT_YES){
+                EaphoneInterface.disConnetDevice(mContext!!)
+                connet()
             }
-            errorDialog.show()
         }
+        errorDialog.show()
     }
 
     override fun onBindSucceed() {
-        runOnUiThread {
-            mLoadingDialog.dismiss()
-            val succeedDialog = SiginBntDialog(mContext!!, false, "提示", "配网成功", "确定") {
-                finish()
-            }
-            succeedDialog.show()
+        mLoadingDialog.dismiss()
+        val succeedDialog = SiginBntDialog(mContext!!, false, "提示", "配网成功", "确定") {
+            finish()
         }
+        succeedDialog.show()
     }
 
     override fun onBindStarted() {
@@ -172,17 +168,20 @@ class WifiSetActivity : AppCompatActivity(), BleBindResultListener {
             if (WifiUitils.is5GHz(mContext)) {
                 if (WifiUitils.is5Gor4G(mContext, apSsid)) {
                     is5G = false
+                    tv_5g_hint.visibility = View.VISIBLE
                     edtApPassword.hint = "请输入Wi-Fi密码"
                     edtApPassword.isEnabled = true
                     bnt_bind.text = "开始配网"
                 } else {
                     is5G = true
+                    tv_5g_hint.visibility = View.GONE
                     edtApPassword.hint = "当前设备不支持5GHz网络"
                     edtApPassword.isEnabled = false
                     bnt_bind.text = "连接其他Wi-Fi"
                 }
             } else {
                 is5G = false
+                tv_5g_hint.visibility = View.GONE
                 edtApPassword.hint = "请输入Wi-Fi密码"
                 edtApPassword.isEnabled = true
                 bnt_bind.text = "开始配网"

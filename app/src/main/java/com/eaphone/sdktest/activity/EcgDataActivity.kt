@@ -69,99 +69,90 @@ class EcgDataActivity : AppCompatActivity(), EcgDataResultListener {
     }
 
     override fun onConnetSucceed(isNewDevice: Boolean) {
-        runOnUiThread {
-            mLoadingDialog.dismiss()
-            if(isFistShow){
-                val w_px = ScreenUtils.getScreenWidth()
-                val padding_w = ConvertUtils.dp2px(20f)
-                //每个大格子的宽度
-                val w = (w_px-padding_w)/15
-                //背景网格高度
-                val h = w*6
-                val lp = layou_ecg.layoutParams
-                lp.height = h
-                layou_ecg.layoutParams = lp
-                layou_ppg.layoutParams = lp
-                if(isNewDevice){
-                    layou_type.visibility = View.VISIBLE
-                    layou_ppg.visibility = View.VISIBLE
-                    timeCunt = 33L
-                    maxRow = 90
-                } else{
-                    layou_ppg.visibility = View.GONE
-                    layou_type.visibility = View.GONE
-                    timeCunt = 10L
-                    maxRow = 300
-                }
-                layou_main.visibility = View.VISIBLE
-                showTimer()
-                isFistShow = false
+        mLoadingDialog.dismiss()
+        if(isFistShow){
+            val w_px = ScreenUtils.getScreenWidth()
+            val padding_w = ConvertUtils.dp2px(20f)
+            //每个大格子的宽度
+            val w = (w_px-padding_w)/15
+            //背景网格高度
+            val h = w*6
+            val lp = layou_ecg.layoutParams
+            lp.height = h
+            layou_ecg.layoutParams = lp
+            layou_ppg.layoutParams = lp
+            if(isNewDevice){
+                layou_type.visibility = View.VISIBLE
+                layou_ppg.visibility = View.VISIBLE
+                timeCunt = 33L
+                maxRow = 90
+            } else{
+                layou_ppg.visibility = View.GONE
+                layou_type.visibility = View.GONE
+                timeCunt = 10L
+                maxRow = 300
             }
+            layou_main.visibility = View.VISIBLE
+            showTimer()
+            isFistShow = false
         }
     }
 
     override fun onDataResult(time: Long, ecgData: List<Int>?, ppg1Data: List<Int>?, ppg2Data: List<Int>?) {
-        runOnUiThread {
-            tv_time.text = "监测时长：${MyUtils.formatSeconds(time)}"
-            if(ecgData != null){
-                for(item in ecgData){
-                    showEcgValues.add(item)
-                }
+        tv_time.text = "监测时长：${MyUtils.formatSeconds(time)}"
+        if(ecgData != null){
+            for(item in ecgData){
+                showEcgValues.add(item)
             }
-            if(ppg1Data != null){
-                for(item in ppg1Data){
-                    showPpgValues.add(item)
-                }
+        }
+        if(ppg1Data != null){
+            for(item in ppg1Data){
+                showPpgValues.add(item)
             }
         }
     }
 
     override fun onThighTemperatureResult(thigh_temperature: String?) {
-        runOnUiThread {
-            if (!TextUtils.isEmpty(thigh_temperature)) {
-                tv_thigh_temperature.text = "腿温：$thigh_temperature ℃"
-            }
+        if (!TextUtils.isEmpty(thigh_temperature)) {
+            tv_thigh_temperature.text = "腿温：$thigh_temperature ℃"
         }
     }
 
     override fun onError(result: String?) {
         //result请参考ResultCode类
-        runOnUiThread {
-            mLoadingDialog.dismiss()
-            CommonDialog(mContext!!, false, "提示", result!!, "退出", "重连") {
-                if (it == CommonDialog.BNT_YES) {
-                    EaphoneInterface.getECGData(mContext, mBluetoothDevice!!, this)
-                    showLoadingDialog("设备连接中...")
-                } else{
-                    ActivityUtils.finishToActivity(MainActivity::class.java, false)
-                }
-            }.show()
-        }
+        mLoadingDialog.dismiss()
+        CommonDialog(mContext!!, false, "提示", result!!, "退出", "重连") {
+            if (it == CommonDialog.BNT_YES) {
+                EaphoneInterface.disConnetDevice(mContext!!)
+                EaphoneInterface.getECGData(mContext, mBluetoothDevice!!, this)
+                showLoadingDialog("设备连接中...")
+            } else{
+                ActivityUtils.finishToActivity(MainActivity::class.java, false)
+            }
+        }.show()
     }
 
     override fun onDeviceStatus(isDown: Boolean) {
-        runOnUiThread {
-            if(isDown){
-                tv_status.text = "离座停止测量"
-                ToastUtils.showShort("落座")
-            } else{
-                //确保每次监测时间在35秒以上，否则获取不到分析数据，本demo未做处理
-                val intent = Intent(mContext, ReportDataActivity::class.java)
-                intent.putExtra("mBluetoothDevice", mBluetoothDevice)
-                startActivityForResult(intent, 10001)
-                layou_error_ecg.visibility = View.GONE
-                layou_error_ppg.visibility = View.GONE
-                tv_status.text = "落座开始测量"
-                showEcgIndex = 0
-                showEcgValues = arrayListOf()
-                showPpgIndex = 0
-                showPpgValues = arrayListOf()
-                ecgview.reset()
-                ppgview.reset()
-                tv_ecg.text = "心率：--"
-                tv_thigh_temperature.text = "腿温：--"
-                tv_time.text = "监测时长：--"
-            }
+        if(isDown){
+            tv_status.text = "离座停止测量"
+            ToastUtils.showShort("落座")
+        } else{
+            //确保每次监测时间在35秒以上，否则获取不到分析数据，本demo未做处理
+            val intent = Intent(mContext, ReportDataActivity::class.java)
+            intent.putExtra("mBluetoothDevice", mBluetoothDevice)
+            startActivityForResult(intent, 10001)
+            layou_error_ecg.visibility = View.GONE
+            layou_error_ppg.visibility = View.GONE
+            tv_status.text = "落座开始测量"
+            showEcgIndex = 0
+            showEcgValues = arrayListOf()
+            showPpgIndex = 0
+            showPpgValues = arrayListOf()
+            ecgview.reset()
+            ppgview.reset()
+            tv_ecg.text = "心率：--"
+            tv_thigh_temperature.text = "腿温：--"
+            tv_time.text = "监测时长：--"
         }
     }
 
@@ -176,31 +167,24 @@ class EcgDataActivity : AppCompatActivity(), EcgDataResultListener {
     }
 
     override fun onEcgCuntResult(heart_rate: Int) {
-        runOnUiThread {
-            tv_ecg.text = "心率：$heart_rate bpm"
-        }
+        tv_ecg.text = "心率：$heart_rate bpm"
     }
 
     override fun onECGStatusResult(ecg_status: Int) {
-        runOnUiThread {
-            if(ecg_status == 1){
-                layou_error_ecg.visibility = View.GONE
-            } else if(ecg_status == -1){
-                layou_error_ecg.visibility = View.VISIBLE
-            }
+        if(ecg_status == 1){
+            layou_error_ecg.visibility = View.GONE
+        } else if(ecg_status == -1){
+            layou_error_ecg.visibility = View.VISIBLE
         }
     }
 
     override fun onPPGStatusResult(ppg_status: Int) {
-        runOnUiThread {
-            if(ppg_status == 1){
-                layou_error_ppg.visibility = View.GONE
-            } else if(ppg_status == -1){
-                layou_error_ppg.visibility = View.VISIBLE
-            }
+        if(ppg_status == 1){
+            layou_error_ppg.visibility = View.GONE
+        } else if(ppg_status == -1){
+            layou_error_ppg.visibility = View.VISIBLE
         }
     }
-
 
     private var showEcgIndex = 0
     private var showPpgIndex = 0
