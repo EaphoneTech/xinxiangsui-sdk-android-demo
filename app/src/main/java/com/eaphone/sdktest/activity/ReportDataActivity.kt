@@ -82,27 +82,27 @@ class ReportDataActivity : AppCompatActivity(), EcgDataCallBack {
 
     private fun setViewData(data:EcgReportData){
         if(data.heart_rate != 0){
-            tv_heart_rate.text = "${data.heart_rate}dpm"
+            tv_heart_rate.text = "${data.heart_rate} bpm"
         } else{
             tv_heart_rate.text = "--"
         }
-        if(data.heart_rate != 0){
-            tv_heart_rate_max.text = "${data.heart_rate_max}dpm"
+        if(data.heart_rate_max != 0){
+            tv_heart_rate_max.text = "${data.heart_rate_max} bpm"
         } else{
             tv_heart_rate_max.text = "--"
         }
         if(data.heart_rate_min != 0){
-            tv_heart_rate_min.text = "${data.heart_rate_min}dpm"
+            tv_heart_rate_min.text = "${data.heart_rate_min} bpm"
         } else{
             tv_heart_rate_min.text = "--"
         }
         if(data.leg_temperature != 0.0){
-            tv_leg_temperature.text = "${data.leg_temperature}℃"
+            tv_leg_temperature.text = "${data.leg_temperature} ℃"
         } else{
             tv_leg_temperature.text = "--"
         }
         if(data.respiration != 0){
-            tv_respiration.text = "${data.respiration}dpm"
+            tv_respiration.text = "${data.respiration} bpm"
         } else{
             tv_respiration.text = "--"
         }
@@ -111,8 +111,8 @@ class ReportDataActivity : AppCompatActivity(), EcgDataCallBack {
         } else{
             tv_heart_rate.text = "--"
         }
-        if(data.heart_rate != 0){
-            tv_heart_beats.text = "${data.heart_rate}次"
+        if(data.heart_beats != 0){
+            tv_heart_beats.text = "${data.heart_beats}次"
         } else{
             tv_heart_beats.text = "--"
         }
