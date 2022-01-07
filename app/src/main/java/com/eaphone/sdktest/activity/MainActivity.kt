@@ -14,11 +14,9 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.blankj.utilcode.util.BarUtils
-import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.PermissionUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.eaphone.lib_sdk.listener.BleScanListener
-import com.eaphone.lib_sdk.listener.InitResultListener
 import com.eaphone.lib_sdk.sdk.EaphoneInterface
 import com.eaphone.sdktest.R
 import com.eaphone.sdktest.adapter.DeviceListAdapter

@@ -31,6 +31,8 @@ class EcgDataActivity : AppCompatActivity(), EcgDataResultListener {
     private var timeCunt = 10L
     private var maxRow = 300
     private var isFistShow = true
+    private var longTime = 0L
+
     private val mLoadingDialog by lazy {
         LoadingDialog(mContext!!)
     }
@@ -100,6 +102,7 @@ class EcgDataActivity : AppCompatActivity(), EcgDataResultListener {
 
     override fun onDataResult(time: Long, ecgData: List<Int>?, ppg1Data: List<Int>?, ppg2Data: List<Int>?) {
         tv_time.text = "监测时长：${MyUtils.formatSeconds(time)}"
+        longTime = time
         if(ecgData != null){
             for(item in ecgData){
                 showEcgValues.add(item)
@@ -140,6 +143,7 @@ class EcgDataActivity : AppCompatActivity(), EcgDataResultListener {
             //确保每次监测时间在35秒以上，否则获取不到分析数据，本demo未做处理
             val intent = Intent(mContext, ReportDataActivity::class.java)
             intent.putExtra("mBluetoothDevice", mBluetoothDevice)
+            intent.putExtra("long_time", longTime)
             startActivityForResult(intent, 10001)
             layou_error_ecg.visibility = View.GONE
             layou_error_ppg.visibility = View.GONE

@@ -26,7 +26,7 @@ class ReportDataActivity : AppCompatActivity(), EcgDataCallBack {
     private var mBluetoothDevice: BluetoothDevice? = null
     private val MAX_GET_COUNT = 15
     private var GET_COUNT = 0
-
+    private var longTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,8 +43,15 @@ class ReportDataActivity : AppCompatActivity(), EcgDataCallBack {
 
     private fun initData() {
         mBluetoothDevice = intent.getParcelableExtra("mBluetoothDevice")
-        EaphoneInterface.getReportData(mBluetoothDevice, this)
+        longTime = intent.getLongExtra("long_time", 0L)
         layou_loding.visibility = View.VISIBLE
+        if(longTime < 35L) {
+            pb_loading.visibility = View.INVISIBLE
+            tv_loding.text = "抱歉！此次测量时长不足35秒，未生成数据报告。"
+            startRunTimer()
+        }else{
+            EaphoneInterface.getReportData(mBluetoothDevice, this)
+        }
     }
 
     private fun initEvent() {
@@ -62,6 +69,7 @@ class ReportDataActivity : AppCompatActivity(), EcgDataCallBack {
     }
 
     override fun onError(errcode:String?, message:String?) {
+        //当错误码为下面两种情况，需要继续轮询获取结果，轮询次数仅供参考（数据上传时间受网络环境影响）
         if(errcode == ErrorCode.CODE_ERROR_ECG_REPORT_DATA_PULL_ING || errcode == ErrorCode.CODE_ERROR_ECG_REPORT_DATA_CHECK_ING){
             if(GET_COUNT < MAX_GET_COUNT){
                 Handler().postDelayed({
@@ -118,9 +126,6 @@ class ReportDataActivity : AppCompatActivity(), EcgDataCallBack {
         }
     }
 
-
-
-
     private var timer: CountDownTimer? = null
     private fun startRunTimer(){
         tv_time_down.visibility = View.VISIBLE
@@ -130,13 +135,11 @@ class ReportDataActivity : AppCompatActivity(), EcgDataCallBack {
             }
 
             override fun onTick(millisUntilFinished: Long) {
-                //（10秒）后将退出
+                //（6秒）后将退出
                 tv_time_down.text = "${millisUntilFinished / 1000}秒后将退出本次测量"
             }
         }.start()
     }
-
-
 
     override fun onDestroy() {
         super.onDestroy()
