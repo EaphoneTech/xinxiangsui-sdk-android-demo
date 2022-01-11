@@ -52,10 +52,4 @@ public class MyUtils {
         return timeStr;
     }
 
-    public static int toPx(float dpValue) {
-        Resources resources = Resources.getSystem();
-        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, resources.getDisplayMetrics());
-        return (int) px;
-    }
-
 }

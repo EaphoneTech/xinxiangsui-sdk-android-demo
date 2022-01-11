@@ -200,7 +200,7 @@ open class EcgShowView(context: Context, attrs: AttributeSet) : View(context, at
         var nowY: Float
         for (i in scrollStartIndex until scrollEndIndex) {
             nowX = (i - scrollStartIndex) * intervalRowHeart
-            if(dataList!= null && dataList!!.size >=i){
+            if(dataList!= null && dataList!!.size >i){
                 var dataValue = dataList!![i]
                 if (dataValue > 0) {
                     if (dataValue > MAX_VALUE) {

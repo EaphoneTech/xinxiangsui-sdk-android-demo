@@ -104,14 +104,10 @@ class EcgDataActivity : AppCompatActivity(), EcgDataResultListener {
         tv_time.text = "监测时长：${MyUtils.formatSeconds(time)}"
         longTime = time
         if(ecgData != null){
-            for(item in ecgData){
-                showEcgValues.add(item)
-            }
+            showEcgValues.addAll(ecgData)
         }
         if(ppg1Data != null){
-            for(item in ppg1Data){
-                showPpgValues.add(item)
-            }
+            showPpgValues.addAll(ppg1Data)
         }
     }
 
@@ -122,7 +118,7 @@ class EcgDataActivity : AppCompatActivity(), EcgDataResultListener {
     }
 
     override fun onError(result: String?) {
-        //result请参考ResultCode类
+        //result请参考ErrorCode类
         mLoadingDialog.dismiss()
         CommonDialog(mContext!!, false, "提示", result!!, "退出", "重连") {
             if (it == CommonDialog.BNT_YES) {
@@ -149,8 +145,8 @@ class EcgDataActivity : AppCompatActivity(), EcgDataResultListener {
             layou_error_ppg.visibility = View.GONE
             tv_status.text = "落座开始测量"
             showEcgIndex = 0
-            showEcgValues = arrayListOf()
             showPpgIndex = 0
+            showEcgValues = arrayListOf()
             showPpgValues = arrayListOf()
             ecgview.reset()
             ppgview.reset()
@@ -193,10 +189,11 @@ class EcgDataActivity : AppCompatActivity(), EcgDataResultListener {
     private var showEcgIndex = 0
     private var showPpgIndex = 0
     private var mShowTimer: Timer? = null
+
     private fun showTimer() {
-        ecgview.setData(showEcgValues, ecgview.SHOW_MODEL_DYNAMIC_SCROLL, maxRow)
+        ecgview.setData(arrayListOf(), ecgview.SHOW_MODEL_DYNAMIC_SCROLL, maxRow)
         ecgview.setLinColor( ContextCompat.getColor(mContext!!,R.color.colorRed))
-        ppgview.setData(showPpgValues, ppgview.SHOW_MODEL_DYNAMIC_SCROLL, maxRow)
+        ppgview.setData(arrayListOf(), ppgview.SHOW_MODEL_DYNAMIC_SCROLL, maxRow)
         ppgview.setLinColor( ContextCompat.getColor(mContext!!,R.color.colorgreen))
         if (mShowTimer == null) {
             mShowTimer = Timer()

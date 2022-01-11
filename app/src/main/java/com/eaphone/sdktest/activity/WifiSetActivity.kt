@@ -138,7 +138,6 @@ class WifiSetActivity : AppCompatActivity(), BleBindResultListener {
         mLoadingDialog.dismiss()
         val errorDialog = CommonDialog(mContext!!, false, "提示", "配网失败,原因：$result", "取消", "重试") {
             if(it == CommonDialog.BNT_YES){
-                EaphoneInterface.disConnetDevice(mContext!!)
                 connet()
             }
         }
