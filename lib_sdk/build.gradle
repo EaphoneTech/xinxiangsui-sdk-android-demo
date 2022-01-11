@@ -1,0 +1,58 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "29.0.3"
+
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.squareup.okhttp3:okhttp:4.9.3"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
+    implementation 'com.google.code.gson:gson:2.8.9'
+}
+ext {
+    artifact = 'lib_sdk'
+    libraryName = 'lib_sdk'
+    libraryDescription = 'lib_sdk'
+    libraryVersion = '1.0.5'
+}
+
+task clearJar(type: Delete) {
+    //这行表示如果你已经打过一次包了，再进行打包则把原来的包删掉
+    delete 'libs/EphoneSDK-1.0.0.jar'
+}
+
+task makeJar(type: Copy) {
+    delete 'libs/EphoneSDK-1.0.0.jar'
+    from('build/intermediates/packaged-classes/release/') //这行表示要打包的文件的路径，根据下面的内容，其实是该路径下的classes.jar
+    into('libs/')  //这行表示打包完毕后包的生成路径，也就是生成的包存在哪
+    include('classes.jar')  //看到这行，如果你对分包有了解的话，你就可以看出来这行它只是将一些类打包了
+    rename('classes.jar', 'EphoneSDK-1.0.0.jar')
+}
+
+makeJar.dependsOn(build)
+
+apply from: '../maven-publish.gradle'
