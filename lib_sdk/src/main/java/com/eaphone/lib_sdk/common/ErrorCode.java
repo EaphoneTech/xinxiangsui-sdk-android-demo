@@ -2,7 +2,7 @@ package com.eaphone.lib_sdk.common;
 
 
 /**
- * SDK返回说明
+ * SDK错误码/消息返回说明
  */
 public class ErrorCode {
 
