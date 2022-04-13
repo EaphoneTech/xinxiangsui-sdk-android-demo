@@ -106,6 +106,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 infos.put("手机型号:", Build.MODEL);
                 infos.put("系统版本", ""+ Build.VERSION.SDK);
                 infos.put("Android版本", Build.VERSION.RELEASE);
+
             }
         } catch (NameNotFoundException e) {
             ELog.e("an error occured when collect package info"+ e.toString());

@@ -72,6 +72,8 @@ public class BLEManager {
     private String mWifi_password = null;
     private CountDownTimer downTimer = null;
     private List<BluetoothDevice> mBluetoothDeviceList;
+    private  Handler mHandler;
+    
     /**
      * 配网模式
      * true传serial_number到SDK扫描加配网
@@ -82,14 +84,10 @@ public class BLEManager {
 
     private BLEManager(Context context) {
         mContext = context.getApplicationContext();
+        mHandler = new Handler();
         innit();
     }
 
-    /**
-     * 获取一个BLEManager单例
-     * @param context Context
-     * @return 返回一个BLEManager的实例对象
-     */
     public static BLEManager getInstance(Context context) {
         if (bleManager == null) {
             synchronized (BLEManager.class) {
@@ -99,15 +97,6 @@ public class BLEManager {
             }
         }
         return bleManager;
-    }
-
-    private static Handler mHandler = new Handler();
-
-    private static Handler getHandler() {
-        if (mHandler == null) {
-            mHandler = new Handler();
-        }
-        return mHandler;
     }
 
     /**
@@ -122,14 +111,6 @@ public class BLEManager {
         if (!mBluetoothAdapter.isEnabled()) {
             ELog.e(ErrorCode.MSG_ERROR_BLE_IS_SHUT);
         }
-    }
-
-    public BleBindResultListener getmBleBindResultListener() {
-        return mBleBindResultListener;
-    }
-
-    public void setmBleBindResultListener(BleBindResultListener mBleBindResultListener) {
-        this.mBleBindResultListener = mBleBindResultListener;
     }
 
     /**
@@ -205,7 +186,7 @@ public class BLEManager {
         mWifi_name = wifi_name;
         mWifi_password = wifi_password;
         if(isConnect){
-            send();
+            send(false);
         } else{
             connetBluetoothDevice(device);
         }
@@ -255,7 +236,7 @@ public class BLEManager {
 
     private Timer timer;
     //发送配网数据，开始配网
-    private void send() {
+    private void send(boolean isReSend) {
         ELog.d("开始配网...");
         if (!isConnect) {
             ELog.e(ErrorCode.MSG_ERROR_SEND_BAND_FAIL);
@@ -264,7 +245,7 @@ public class BLEManager {
             }
             return;
         }
-        setEphoneData(mSerial_number, mWifi_name, mWifi_password);
+        setEphoneData(mSerial_number, mWifi_name, mWifi_password, isReSend);
         if (timer != null) {
             timer.cancel();
         }
@@ -291,24 +272,26 @@ public class BLEManager {
             }
 
         }, 500, 1000);
+
     }
 
-
-    private void setEphoneData(String serial_number, String wifi_name, String wifi_password) {
-        String primisson = "permission.app." + serial_number;
-        MessageDigest md5 = null;
-        try {
-            md5 = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        byte[] bytes = md5.digest(primisson.getBytes());
-        mGattWriteQueue.clear();
+    private void setEphoneData(String serial_number, String wifi_name, String wifi_password, boolean isReSend) {
         mGattReadQueue.clear();
-        mGattWriteQueue.add(new GattCharaValue(EA_UUID_DEVICE_PERMISSION, bytes));
-        mGattWriteQueue.add(new GattCharaValue(EA_UUID_WIFI_SSID, wifi_name.getBytes()));
-        mGattWriteQueue.add(new GattCharaValue(EA_UUID_WIFI_PASSWORD, wifi_password.getBytes()));
-        mGattWriteQueue.add(new GattCharaValue(EA_UUID_WIFI_STATE, "connect".getBytes()));
+        if(!isReSend){
+            mGattWriteQueue.clear();
+            String primisson = "permission.app." + serial_number;
+            MessageDigest md5 = null;
+            try {
+                md5 = MessageDigest.getInstance("MD5");
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+            byte[] bytes = md5.digest(primisson.getBytes());
+            mGattWriteQueue.add(new GattCharaValue(EA_UUID_DEVICE_PERMISSION, bytes));
+            mGattWriteQueue.add(new GattCharaValue(EA_UUID_WIFI_SSID, wifi_name.getBytes()));
+            mGattWriteQueue.add(new GattCharaValue(EA_UUID_WIFI_PASSWORD, wifi_password.getBytes()));
+            mGattWriteQueue.add(new GattCharaValue(EA_UUID_WIFI_STATE, "connect".getBytes()));
+        }
         mGattReadQueue.add(EA_UUID_DEVICE_PERMISSION);
         mGattReadQueue.add(EA_UUID_WIFI_STATE);
     }
@@ -327,7 +310,7 @@ public class BLEManager {
                         switch (state) {
                             case "connected":
                                 if(mBleBindResultListener!= null){
-                                    getHandler().post(() -> mBleBindResultListener.onBindSucceed());
+                                    mHandler.post(() -> mBleBindResultListener.onBindSucceed());
                                 }
                                 disconnet();
                                 break;
@@ -353,7 +336,7 @@ public class BLEManager {
                             String tt = EaphoneCommUtils.double2String(t1, 1);
                             ELog.d("腿温:"+ tt);
                             if(mEcgDataResultListener!= null){
-                                getHandler().post(() -> mEcgDataResultListener.onThighTemperatureResult(tt));
+                                mHandler.post(() -> mEcgDataResultListener.onThighTemperatureResult(tt));
                             }
                         }
                         break;
@@ -363,7 +346,7 @@ public class BLEManager {
                             ELog.d("设备离坐");
                             isDown = false;
                             if(mEcgDataResultListener!= null){
-                                getHandler().post(() -> mEcgDataResultListener.onDeviceStatus(false));
+                                mHandler.post(() -> mEcgDataResultListener.onDeviceStatus(false));
                             }
                             isFistData = true;
                         }else{//数据信号
@@ -371,7 +354,7 @@ public class BLEManager {
                             if(isFistData){
                                 ELog.d("设备落坐");
                                 if(mEcgDataResultListener!= null){
-                                    getHandler().post(() -> mEcgDataResultListener.onDeviceStatus(true));
+                                    mHandler.post(() -> mEcgDataResultListener.onDeviceStatus(true));
                                 }
                                 isFistData = false;
                             } else{
@@ -386,7 +369,7 @@ public class BLEManager {
                             }
                             if(mEcgDataResultListener!= null){
                                 ELog.d("size ="+ecgData.size());
-                                getHandler().post(() -> mEcgDataResultListener.onDataResult(status, ecgData, null, null));
+                                mHandler.post(() -> mEcgDataResultListener.onDataResult(status, ecgData, null, null));
                             }
                         }
                         break;
@@ -396,7 +379,7 @@ public class BLEManager {
                             ELog.d("设备离坐");
                             isDown = false;
                             if(mEcgDataResultListener!= null){
-                                getHandler().post(() ->mEcgDataResultListener.onDeviceStatus(false));
+                                mHandler.post(() ->mEcgDataResultListener.onDeviceStatus(false));
                             }
                             isFistData = true;
                         }else{//数据信号
@@ -404,7 +387,7 @@ public class BLEManager {
                             if(isFistData){
                                 ELog.d("设备落坐");
                                 if(mEcgDataResultListener!= null){
-                                    getHandler().post(() -> mEcgDataResultListener.onDeviceStatus(true));
+                                    mHandler.post(() -> mEcgDataResultListener.onDeviceStatus(true));
                                 }
                                 isFistData = false;
                             } else{
@@ -430,11 +413,7 @@ public class BLEManager {
                                     }
                                 }
                                 if(mEcgDataResultListener!= null){
-                                    ELog.d("ecg ="+ecgData.toString());
-                                    ELog.d("ppg1 ="+ppgData1.toString());
-                                    ELog.d("ppgData2 ="+ecgData.toString());
-                                    ELog.d("ecgData.size ="+ecgData.size() +",ppgData1.size ="+ppgData1.size() +",ppgData2.size ="+ppgData2.size());
-                                    getHandler().post(() -> mEcgDataResultListener.onDataResult(statu, ecgData, ppgData1, ppgData2));
+                                    mHandler.post(() -> mEcgDataResultListener.onDataResult(statu, ecgData, ppgData1, ppgData2));
                                 }
                             }
                         }
@@ -450,7 +429,7 @@ public class BLEManager {
                                     if(result.contains("_v")){
                                         if(mEcgDataResultListener!= null){
                                             int cunt = jsonObject.getInt("_v");
-                                            getHandler().post(() -> mEcgDataResultListener.onEcgCuntResult(cunt));
+                                            mHandler.post(() -> mEcgDataResultListener.onEcgCuntResult(cunt));
                                         }
                                     }
                                     break;
@@ -459,7 +438,7 @@ public class BLEManager {
                                     if(result.contains("quality")){
                                         if(mEcgDataResultListener!= null){
                                             int quality = jsonObject.getInt("quality");
-                                            getHandler().post(() -> mEcgDataResultListener.onECGStatusResult(quality));
+                                            mHandler.post(() -> mEcgDataResultListener.onECGStatusResult(quality));
                                         }
                                     }
                                     break;
@@ -469,7 +448,7 @@ public class BLEManager {
                                         if(v != 0){
                                             if(mEcgDataResultListener!= null){
                                                 ELog.d("ecg_cunt:"+v);
-                                                getHandler().post(() -> mEcgDataResultListener.onEcgCuntResult(v));
+                                                mHandler.post(() -> mEcgDataResultListener.onEcgCuntResult(v));
                                             }
                                         }
                                     }
@@ -478,7 +457,7 @@ public class BLEManager {
                                         if(ecg != 0){
                                             if(mEcgDataResultListener!= null){
                                                 ELog.d("ecg_status:"+ecg);
-                                                getHandler().post(() -> mEcgDataResultListener.onECGStatusResult(ecg));
+                                                mHandler.post(() -> mEcgDataResultListener.onECGStatusResult(ecg));
                                             }
                                         }
                                     }
@@ -487,7 +466,7 @@ public class BLEManager {
                                         if(ppg != 0){
                                             if(mEcgDataResultListener!= null){
                                                 ELog.d("ppg_status:"+ppg);
-                                                getHandler().post(() -> mEcgDataResultListener.onPPGStatusResult(ppg));
+                                                mHandler.post(() -> mEcgDataResultListener.onPPGStatusResult(ppg));
                                             }
                                         }
                                     }
@@ -556,18 +535,18 @@ public class BLEManager {
         if (code.equals("410")) {
             ELog.e(ErrorCode.MSG_ERROR_WIFI_PASSWORD_IS_FAIL);
             if(mBleBindResultListener != null){
-                getHandler().post(() -> mBleBindResultListener.onBindError(ErrorCode.MSG_ERROR_WIFI_PASSWORD_IS_FAIL));
+                mHandler.post(() -> mBleBindResultListener.onBindError(ErrorCode.MSG_ERROR_WIFI_PASSWORD_IS_FAIL));
             }
             disconnet();
-        } else {
+        }else {
             if (reSendNum < maxSendNum) {
                 //重连次数自增
                 reSendNum++;
-                send();
+                send(true);
             } else {
                 ELog.e("配网失败,错误码："+code);
                 if(mBleBindResultListener!= null){
-                    getHandler().post(() -> mBleBindResultListener.onBindError(ErrorCode.MSG_ERROR_BIND_UNKNOWN + code));
+                    mHandler.post(() -> mBleBindResultListener.onBindError(ErrorCode.MSG_ERROR_BIND_UNKNOWN + code));
                 }
                 reSendNum = 0;
                 disconnet();
@@ -656,7 +635,7 @@ public class BLEManager {
             return;
         }
         if (enable) {
-            getHandler().postDelayed(() -> {
+            mHandler.postDelayed(() -> {
                 if(isScaning){
                     BLEManager.this.scanLeDevice(false);
                 }
@@ -723,14 +702,14 @@ public class BLEManager {
                     isDown = false;
                     if(isEcgMoudel){
                         if (mEcgDataResultListener != null) {
-                            getHandler().post(() -> mEcgDataResultListener.onError(ErrorCode.MSG_ERROR_DEVICE_IS_DISCONNECT));
+                            mHandler.post(() -> mEcgDataResultListener.onError(ErrorCode.MSG_ERROR_DEVICE_IS_DISCONNECT));
                         }
                     }else{
                         if (mBleBindResultListener != null) {
-                            getHandler().post(() -> mBleBindResultListener.onBindError(ErrorCode.MSG_ERROR_DEVICE_IS_DISCONNECT));
+                            mHandler.post(() -> mBleBindResultListener.onBindError(ErrorCode.MSG_ERROR_DEVICE_IS_DISCONNECT));
                         }
 //                        if (mBleConnectResultListener != null) {
-//                            getHandler().post(() -> mBleConnectResultListener.onConnectError(ErrorCode.MSG_ERROR_DEVICE_IS_DISCONNECT));
+//                            mHandler().post(() -> mBleConnectResultListener.onConnectError(ErrorCode.MSG_ERROR_DEVICE_IS_DISCONNECT));
 //                        }
                     }
                 } else {
@@ -742,14 +721,14 @@ public class BLEManager {
                     reConnectionNum = 0;
                     if(isEcgMoudel){
                         if (mEcgDataResultListener != null) {
-                            getHandler().post(() -> mEcgDataResultListener.onError(ErrorCode.MSG_ERROR_CONNNECT_DEVICE_FAIL));
+                            mHandler.post(() -> mEcgDataResultListener.onError(ErrorCode.MSG_ERROR_CONNNECT_DEVICE_FAIL));
                         }
                     } else{
 //                        if (mBleConnectResultListener != null) {
-//                            getHandler().post(() -> mBleConnectResultListener.onConnectError(ErrorCode.MSG_ERROR_CONNNECT_DEVICE_FAIL));
+//                            mHandler().post(() -> mBleConnectResultListener.onConnectError(ErrorCode.MSG_ERROR_CONNNECT_DEVICE_FAIL));
 //                        }
                         if (mBleBindResultListener != null) {
-                            getHandler().post(() -> mBleBindResultListener.onBindError(ErrorCode.MSG_ERROR_CONNNECT_DEVICE_FAIL));
+                            mHandler.post(() -> mBleBindResultListener.onBindError(ErrorCode.MSG_ERROR_CONNNECT_DEVICE_FAIL));
                         }
                     }
                 }
@@ -817,22 +796,23 @@ public class BLEManager {
                             smGattConnector.drvConnect(mBluetoothGatt, characteristicMap);
                             if(isEcgMoudel) {
                                 if(mEcgDataResultListener != null){
-                                    getHandler().post(() -> mEcgDataResultListener.onConnetSucceed(isNewDevice));
+                                    mHandler.post(() -> mEcgDataResultListener.onConnetSucceed(isNewDevice));
                                 }
                                 openNewData();
                                 getTemperature();
                             } else{
                                 if(mBleBindResultListener != null){
-                                    getHandler().post(() -> mBleBindResultListener.onConnetSucceed());
+                                    mHandler.post(() -> mBleBindResultListener.onConnetSucceed());
                                 }
-                                send();
+                                send(false);
                             }
                         } else {
                             ELog.e("smGattConnector==null");
                         }
+
                     }
 //                    if (mBleConnectResultListener != null && !isEcgMoudel) {
-//                        getHandler().post(() -> mBleConnectResultListener.onConnectSucceed());
+//                        mHandler().post(() -> mBleConnectResultListener.onConnectSucceed());
 //                    }
                 }
             }
@@ -888,10 +868,7 @@ public class BLEManager {
             @Override
             public void run() {
                 if (smGattConnector != null && mGattReadQueue != null && mGattReadQueue.size() > 0 && isDown && isConnect) {
-                    boolean isRead = smGattConnector.appRead(mGattReadQueue.get(0));
-                    if (isRead) {
-
-                    }
+                    smGattConnector.appRead(mGattReadQueue.get(0));
                 }
             }
 
@@ -920,11 +897,11 @@ public class BLEManager {
                 if(!isConnect){
                     if(!isEcgMoudel && mBleBindResultListener!= null){
                         ELog.e(ErrorCode.MSG_ERROR_CONNECT_TIME_OUT);
-                        getHandler().post(() -> mBleBindResultListener.onBindError(ErrorCode.MSG_ERROR_CONNECT_TIME_OUT));
+                        mHandler.post(() -> mBleBindResultListener.onBindError(ErrorCode.MSG_ERROR_CONNECT_TIME_OUT));
                     }
                     if(isEcgMoudel && mEcgDataResultListener!= null){
                         ELog.e(ErrorCode.MSG_ERROR_CONNECT_TIME_OUT);
-                        getHandler().post(() -> mEcgDataResultListener.onError(ErrorCode.MSG_ERROR_CONNECT_TIME_OUT));
+                        mHandler.post(() -> mEcgDataResultListener.onError(ErrorCode.MSG_ERROR_CONNECT_TIME_OUT));
                     }
                 }
             }

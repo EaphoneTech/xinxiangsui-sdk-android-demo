@@ -22,7 +22,8 @@ abstract class GattConnector {
      * @param value byte[]
      * @return true or false
      */
-    boolean appWrite(String uuid16, byte[] value){
+    boolean
+    appWrite(String uuid16, byte[] value){
         if (mBluetoothGatt == null) {
             ELog.e("appWrite GATT is disconnected");
             return false;

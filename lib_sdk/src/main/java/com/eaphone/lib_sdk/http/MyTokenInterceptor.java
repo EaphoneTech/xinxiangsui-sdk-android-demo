@@ -1,6 +1,7 @@
 package com.eaphone.lib_sdk.http;
 
 import android.text.TextUtils;
+import com.eaphone.lib_sdk.common.ErrorCode;
 import com.eaphone.lib_sdk.http.api.ApiTools;
 import com.eaphone.lib_sdk.listener.InitResultListener;
 import com.eaphone.lib_sdk.utils.SpConstant;
@@ -63,9 +64,9 @@ public class MyTokenInterceptor implements Interceptor {
                 }
                 String bodyString = buffer.clone().readString(charset);
                 JSONObject jsonObject = new JSONObject(bodyString);
-                if(bodyString.contains("errcode")){
-                    String errcode = jsonObject.getString("errcode");
-                    return errcode.equals("8001003");
+                if(bodyString.contains("code")){
+                    String code = jsonObject.getString("code");
+                    return code.equals(ErrorCode.CODE_ERROR_TOKEN_IS_EXCEED);
                 }
             }
         } catch (IOException e) {

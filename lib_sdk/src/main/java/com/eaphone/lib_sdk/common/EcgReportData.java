@@ -1,24 +1,58 @@
 package com.eaphone.lib_sdk.common;
 
 
-public class EcgReportData {
-    private String batch_id;
+import com.eaphone.lib_sdk.http.BaseResponseStatusEntity;
+
+public class EcgReportData extends BaseResponseStatusEntity {
+
+    /**
+     *数据id
+     */
+    private String dataid;
+    /**
+     *如厕开始时间
+     */
     private String begin_time;
+    /**
+     *如厕结束时间
+     */
     private String end_time;
+    /**
+     *总心博
+     */
     private int heart_beats;
+    /**
+     *平均心率
+     */
     private int heart_rate;
+    /**
+     *最快心率
+     */
     private int heart_rate_max;
+    /**
+     *最慢心率
+     */
     private int heart_rate_min;
+    /**
+     *腿温
+     */
     private double leg_temperature;
+    /**
+     *呼吸率
+     */
     private int respiration;
+    /**
+     *如厕时长
+     */
     private long duration;
 
-    public String getBatch_id() {
-        return batch_id;
+
+    public String getDataid() {
+        return dataid;
     }
 
-    public void setBatch_id(String batch_id) {
-        this.batch_id = batch_id;
+    public void setDataid(String dataid) {
+        this.dataid = dataid;
     }
 
     public String getBegin_time() {
@@ -96,7 +130,7 @@ public class EcgReportData {
     @Override
     public String toString() {
         return "EcgReportData{" +
-                "batch_id='" + batch_id + '\'' +
+                "dataid='" + dataid + '\'' +
                 ", begin_time='" + begin_time + '\'' +
                 ", end_time='" + end_time + '\'' +
                 ", heart_beats=" + heart_beats +

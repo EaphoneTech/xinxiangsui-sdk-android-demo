@@ -6,7 +6,6 @@ import com.eaphone.lib_sdk.ble.EaphoneCommUtils;
 import com.eaphone.lib_sdk.common.EcgReportData;
 import com.eaphone.lib_sdk.common.ErrorCode;
 import com.eaphone.lib_sdk.http.TokenResultEntity;
-import com.eaphone.lib_sdk.http.BaseResponseEntity;
 import com.eaphone.lib_sdk.http.EahponeOkhttpRequest;
 import com.eaphone.lib_sdk.http.EaphoneOkHttpException;
 import com.eaphone.lib_sdk.http.IResponseCallback;
@@ -62,12 +61,11 @@ public class ApiTools {
             @Override
             public void onResponse(String response) {
                 //不再重复定义Result类
-                Type userType = new TypeToken<BaseResponseEntity<TokenResultEntity>>(){}.getType();
-                BaseResponseEntity<TokenResultEntity> baseResult = new Gson().fromJson(response,userType);
-                if(baseResult.isSuccess()){
+                Type userType = new TypeToken<TokenResultEntity>(){}.getType();
+                TokenResultEntity baseResult = new Gson().fromJson(response,userType);
+                if(baseResult.getCode().equals("0")){
                     ELog.d("sdk init success");
-                    TokenResultEntity result = baseResult.getData();
-                    SpConstant.setToken(result.getAccess_token());
+                    SpConstant.setToken(baseResult.getAccess_token());
                     SpConstant.setAppID(appid);
                     SpConstant.setSecret(secret);
                     SpConstant.setLogin(true);
@@ -75,10 +73,10 @@ public class ApiTools {
                         listener.onSucceed();
                     }
                 } else{
-                    ELog.e("sdk init fail:" + baseResult.getMessage());
+                    ELog.e("sdk init fail:" + baseResult.getMsg());
                     SpConstant.setLogin(false);
                     if(listener != null){
-                        listener.onError(baseResult.getMessage());
+                        listener.onError(baseResult.getMsg());
                     }
                 }
             }
@@ -102,8 +100,12 @@ public class ApiTools {
             return;
         }
         String serialNumber = EaphoneCommUtils.getSerialNumber(device.getName());
-        String url = API.REPORT_DATA+serialNumber+"/";
-        EahponeOkhttpRequest.getInstance().doGet(url, new IResponseCallback() {
+        String token = SpConstant.getToken();
+        String url = API.REPORT_DATA;
+        Map<String, String> map = new HashMap<>();
+        map.put("access_token", token);
+        map.put("deviceid", serialNumber);
+        EahponeOkhttpRequest.getInstance().doGet(url, map, new IResponseCallback() {
             @Override
             public void onFail(EaphoneOkHttpException e) {
                 ELog.e("sdk getReportData fail");
@@ -114,15 +116,15 @@ public class ApiTools {
             @Override
             public void onResponse(String response) {
                 //不再重复定义Result类
-                Type userType = new TypeToken<BaseResponseEntity<EcgReportData>>(){}.getType();
-                BaseResponseEntity<EcgReportData> baseResult = new Gson().fromJson(response,userType);
-                if(baseResult.isSuccess()){
+                Type userType = new TypeToken<EcgReportData>(){}.getType();
+                EcgReportData baseResult = new Gson().fromJson(response,userType);
+                if(baseResult.getCode().equals("0")){
                     ELog.d("sdk getReportData success");
-                    EcgReportData data = baseResult.getData();
-                    dataCallBack.onSucceed(data);
+                  //  EcgReportData data = baseResult.getData();
+                    dataCallBack.onSucceed(baseResult);
                 } else{
-                    ELog.e("sdk getReportData fail:"+baseResult.getMessage());
-                    dataCallBack.onError(baseResult.getErrcode(), baseResult.getMessage());
+                    ELog.e("sdk getReportData fail:"+baseResult.getMsg());
+                    dataCallBack.onError(baseResult.getCode(), baseResult.getMsg());
                 }
             }
         });

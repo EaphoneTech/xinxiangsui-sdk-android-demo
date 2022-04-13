@@ -37,7 +37,7 @@ ext {
     artifact = 'lib_sdk'
     libraryName = 'lib_sdk'
     libraryDescription = 'lib_sdk'
-    libraryVersion = '1.0.5'
+    libraryVersion = '1.0.6'
 }
 
 task clearJar(type: Delete) {

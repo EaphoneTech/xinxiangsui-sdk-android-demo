@@ -79,7 +79,7 @@
 -keep public class com.eaphone.lib_sdk.common.** { *; }
 #不混淆某个类
 -keep public class com.eaphone.lib_sdk.sdk.EaphoneInterface { *; }
--keep public class com.eaphone.lib_sdk.http.BaseResponseEntity { *; }
+#-keep public class com.eaphone.lib_sdk.http.BaseResponseEntity { *; }
 -keep public class com.eaphone.lib_sdk.http.BaseResponseStatusEntity { *; }
 -keep public class com.eaphone.lib_sdk.http.TokenResultEntity { *; }
 

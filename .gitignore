@@ -34,4 +34,4 @@ bin-release/
 >>>>>>> d28c80221870d10da71fe187cd72062cc602d15e
 
 #demo模式下lib包不上传
-#/lib_sdk/
+/lib_sdk/

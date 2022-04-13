@@ -2,48 +2,22 @@ package com.eaphone.lib_sdk.http;
 
 
 public class BaseResponseStatusEntity {
-    private boolean success;
-    private String errcode;
-    private String message;
+    private String code;
+    private String msg;
 
-
-
-    public BaseResponseStatusEntity(boolean success) {
-        this.success = success;
+    public String getCode() {
+        return code;
     }
 
-    public BaseResponseStatusEntity(boolean success, String errcode) {
-        this.success = success;
-        this.errcode = errcode;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public BaseResponseStatusEntity(boolean success, String errcode, String message) {
-        this.success = success;
-        this.errcode = errcode;
-        this.message = message;
+    public String getMsg() {
+        return msg;
     }
 
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public String getErrcode() {
-        return errcode;
-    }
-
-    public void setErrcode(String errcode) {
-        this.errcode = errcode;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

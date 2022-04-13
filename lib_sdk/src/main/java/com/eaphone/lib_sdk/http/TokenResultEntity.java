@@ -1,7 +1,7 @@
 package com.eaphone.lib_sdk.http;
 
 
-public class TokenResultEntity {
+public class TokenResultEntity extends BaseResponseStatusEntity {
     private String access_token;
     private int expire_in;
 

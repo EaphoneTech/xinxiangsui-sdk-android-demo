@@ -5,6 +5,7 @@ import android.content.Context;
 import com.eaphone.lib_sdk.ble.BLEManager;
 import com.eaphone.lib_sdk.http.api.ApiTools;
 import com.eaphone.lib_sdk.listener.*;
+import com.eaphone.lib_sdk.utils.CrashHandler;
 
 /**
  * EaphoneSDK对外暴露接口
