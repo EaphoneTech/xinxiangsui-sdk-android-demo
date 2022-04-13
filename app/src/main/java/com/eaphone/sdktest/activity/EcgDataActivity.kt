@@ -83,12 +83,12 @@ class EcgDataActivity : AppCompatActivity(), EcgDataResultListener {
             lp.height = h
             layou_ecg.layoutParams = lp
             layou_ppg.layoutParams = lp
-            if(isNewDevice){
+            if(isNewDevice){//新固件采样率每秒30个点
                 layou_type.visibility = View.VISIBLE
                 layou_ppg.visibility = View.VISIBLE
                 timeCunt = 33L
                 maxRow = 90
-            } else{
+            } else{ //每秒采样率100个点
                 layou_ppg.visibility = View.GONE
                 layou_type.visibility = View.GONE
                 timeCunt = 10L
@@ -118,7 +118,10 @@ class EcgDataActivity : AppCompatActivity(), EcgDataResultListener {
     }
 
     override fun onError(result: String?) {
-        //result请参考ErrorCode类
+        //result请参考 com.eaphone.lib_sdk.common.ErrorCode类
+//        if(result == ErrorCode.MSG_ERROR_DEVICE_IS_DISCONNECT){ //设备断开连接
+//
+//         }
         mLoadingDialog.dismiss()
         CommonDialog(mContext!!, false, "提示", result!!, "退出", "重连") {
             if (it == CommonDialog.BNT_YES) {
@@ -156,7 +159,6 @@ class EcgDataActivity : AppCompatActivity(), EcgDataResultListener {
         }
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 10001) {
@@ -189,7 +191,6 @@ class EcgDataActivity : AppCompatActivity(), EcgDataResultListener {
     private var showEcgIndex = 0
     private var showPpgIndex = 0
     private var mShowTimer: Timer? = null
-
     private fun showTimer() {
         ecgview.setData(arrayListOf(), ecgview.SHOW_MODEL_DYNAMIC_SCROLL, maxRow)
         ecgview.setLinColor( ContextCompat.getColor(mContext!!,R.color.colorRed))
@@ -227,9 +228,9 @@ class EcgDataActivity : AppCompatActivity(), EcgDataResultListener {
     }
 
     override fun onBackPressed() {
-       // super.onBackPressed()
         onback()
     }
+
     override fun onDestroy() {
         super.onDestroy()
         mShowTimer?.cancel()

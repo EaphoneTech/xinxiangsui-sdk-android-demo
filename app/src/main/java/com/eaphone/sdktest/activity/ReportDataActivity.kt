@@ -68,8 +68,9 @@ class ReportDataActivity : AppCompatActivity(), EcgDataCallBack {
         }
     }
 
+
     override fun onError(errcode:String?, message:String?) {
-        //当错误码为下面两种情况，需要继续轮询获取结果，轮询次数仅供参考（数据上传时间受网络环境影响）
+        //当错误码为下面两种情况，需要继续轮询获取结果，轮询次数仅供参考（马桶盖数据上传时间受网络环境影响）
         if(errcode == ErrorCode.CODE_ERROR_ECG_REPORT_DATA_PULL_ING || errcode == ErrorCode.CODE_ERROR_ECG_REPORT_DATA_CHECK_ING){
             if(GET_COUNT < MAX_GET_COUNT){
                 Handler().postDelayed({

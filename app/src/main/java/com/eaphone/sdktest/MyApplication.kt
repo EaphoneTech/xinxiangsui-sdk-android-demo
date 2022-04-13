@@ -9,8 +9,8 @@ class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-      //  EaphoneInterface.init(this, "app_id", "app_secret", object:
-        EaphoneInterface.init(this, "61b1e60f3e2b3d5a4b457425", "649a613a884c47dda2b530aeadb95c6f", object:
+        //SDK初始化，初始化执行位置可根据业务需求自行更改
+        EaphoneInterface.init(this, "app_id", " app_secret", object:
             InitResultListener {
             override fun onSucceed() {
 

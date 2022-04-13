@@ -1,6 +1,6 @@
 # 易风设备管理SDK
 ## 说明
-易风设备管理SDK，包括获取设备列表，设备配网和设备实时波形数据，根据需要您可以选择实现相关接口
+易风设备管理SDK，包括SDK初始化（）、获取设备列表（）、设备配网（）和设备实时波形数据（），根据需要您可以选择实现相关接口
 
 [Demo](https://github.com/EaphoneTech/xinxiangsui-sdk-android-demo)
 ## 集成
@@ -9,7 +9,7 @@
 SDK网络框架采用okhttp3，为了您能正常使用，需如下依赖
 ```language
 dependencies {
-    implementation 'io.github.eaphonetech:lib_sdk:1.0.5'
+    implementation 'io.github.eaphonetech:lib_sdk:1.0.6'
     //下面无论是maven途径还是.aar 都需要，你也可以根据项目需要替换成相应版本号
     implementation "com.squareup.okhttp3:okhttp:4.9.3"
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
@@ -28,11 +28,11 @@ allprojects {
 ```
 
 二：aar包:
-将EaphoneSDKDemo中libs目录下的 lib_sdk-1.0.5.aar 拷贝至项目libs目录下,
+将EaphoneSDKDemo中libs目录下的 lib_sdk-1.0.6.aar 拷贝至项目libs目录下,
 
 ```language
 dependencies {
-    implementation files('libs/lib_sdk-1.0.5.aar')
+    implementation files('libs/lib_sdk-1.0.6.aar')
     //下面无论是maven途径还是.aar 都需要，你也可以根据项目需要替换成相应版本号
     implementation "com.squareup.okhttp3:okhttp:4.9.3"
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
@@ -51,17 +51,18 @@ dependencies {
 
 ```
 ## SDK初始化
-使用心相随sdk,需要先在平台申请app_key
+使用心相随sdk,需要先在平台申请app_id
 
 ```language
-EaphoneInterface.init(mContext, app_key, mInitResultListener)
+EaphoneInterface.init(mContext, app_id, app_secret, mInitResultListener)
 ```
 参数说明
 
 |参数|类型|说明|
 |-|-|-|
 |mContext|Context|--|
-|app_key|String|心相随平台申请的app_key|
+|app_id|String|心相随平台申请的app_id|
+|app_secret|String|心相随平台申请的app_secret|
 |mInitResultListener|InitResultListener|初始化回调函数|
 
 **InitResultListener**
@@ -178,13 +179,10 @@ EaphoneInterface.netBind(mContext, mBluetoothDevice, wifi_name, wifi_password, m
 |respiration|int|呼吸率|
 |duration|long|监测时长|
 
-**ErrorCode类**
-
-说明：SDK错误码，错误消息说明文件
-
 
 ## 退出设备连接
-相关页面关闭，需要调用退出接口，防止内存泄漏和蓝牙设备一直不断开连接
+相关页面关闭和SDK业务切换，需要调用退出接口EaphoneInterface.disConnetDevice（），防止内存泄漏和断开设备蓝牙连接
+当设备已连接，设备无法被发现，调用设备列表接口，请确保设备已断开蓝牙连接。
 代码示例：
 ```language
 
@@ -195,3 +193,19 @@ EaphoneInterface.netBind(mContext, mBluetoothDevice, wifi_name, wifi_password, m
 
 
 ```
+
+**ErrorCode类**
+
+说明：SDK各接口返回错误码/消息说明类
+路径：com.eaphone.lib_sdk.common.ErrorCode
+|错误码|描述|
+|-|-|
+|8001001|APPID或Secret不正确|
+|8001003|AccessToken已过期| 
+|8004001|健康数据不存在|
+|8004002|健康数据上传中|
+|8004003|健康数据时长不够|
+|8004004|健康数据分析中|
+|100400|IOException|
+|100101|SDK未初始化|
+|100010|Device为空|
